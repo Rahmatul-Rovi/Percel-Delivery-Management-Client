@@ -228,6 +228,81 @@ const Services = () => {
         </div>
       </section>
 
+      {/* Become a Merchant Section */}
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row items-center">
+      
+      {/* Left Side: Content & Benefits */}
+      <div className="lg:w-1/2 p-10 md:p-16 space-y-8">
+        <div>
+          <h2 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-3">
+            Grow Your Business
+          </h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+            Become an Edifice <br /> <span className="text-orange-500">Merchant Partner</span>
+          </h3>
+          <p className="text-slate-400 mt-6 text-lg leading-relaxed">
+            Join thousands of businesses who trust us to deliver their products. 
+            From local shops to large enterprises, we provide the logistics power you need.
+          </p>
+        </div>
+
+        {/* Benefit List */}
+        <div className="space-y-4">
+          {[
+            "Preferential shipping rates for high volume",
+            "Dedicated account manager for your business",
+            "API integration with your e-commerce store",
+            "Customized delivery tracking for your customers"
+          ].map((benefit, i) => (
+            <div key={i} className="flex items-center gap-3 text-slate-200">
+              <div className="bg-orange-500/20 p-1 rounded-full">
+                <CheckCircle className="w-5 h-5 text-orange-500" />
+              </div>
+              <span className="font-medium">{benefit}</span>
+            </div>
+          ))}
+        </div>
+
+        <button className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg shadow-orange-600/30">
+          Apply as Merchant
+        </button>
+      </div>
+
+      {/* Right Side: Decorative Image/Box Area */}
+      <div className="lg:w-1/2 w-full h-full min-h-[400px] bg-orange-600 relative flex items-center justify-center p-12">
+        {/* Decorative Circles */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500 rounded-full -mr-20 -mt-20 opacity-50"></div>
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-700 rounded-full -ml-10 -mb-10 opacity-30"></div>
+        
+        {/* Floating Stats Card for "Real" feel */}
+        <div className="relative bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full space-y-6">
+          <div className="flex items-center gap-4">
+            <div className="bg-green-100 p-3 rounded-2xl">
+              <Package className="w-8 h-8 text-green-600" />
+            </div>
+            <div>
+              <p className="text-slate-500 text-sm font-bold uppercase">Today's Orders</p>
+              <p className="text-2xl font-black text-slate-900">+1,240</p>
+            </div>
+          </div>
+          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-orange-500 w-[75%] rounded-full"></div>
+          </div>
+          <p className="text-slate-500 text-sm italic">
+            "Switching to Edifice increased our delivery speed by 40%."
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-slate-200"></div>
+            <span className="text-sm font-bold text-slate-800">— CEO, Casio Store</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
       {/* 4. Tracking CTA Section */}
       <section className="py-20 bg-orange-50">
         <div className="max-w-5xl mx-auto px-6 bg-orange-600 rounded-3xl p-10 md:p-16 text-center shadow-xl shadow-orange-200">
