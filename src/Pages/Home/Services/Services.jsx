@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import log from '../../../assets/brands/amazon.png';
 import log2 from '../../../assets/brands/amazon_vector.png';
 import log3 from '../../../assets/brands/casio.png';
@@ -229,8 +230,8 @@ const Services = () => {
       </section>
 
       {/* Become a Merchant Section */}
-<section className="py-20 bg-white">
-  <div className="max-w-7xl mx-auto px-6">
+<section data-aos="zoom-in-up" className="py-20 bg-white">
+  <div  className="max-w-7xl mx-auto px-6">
     <div className="bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row items-center">
       
       {/* Left Side: Content & Benefits */}
@@ -266,8 +267,9 @@ const Services = () => {
         </div>
 
         <button className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg shadow-orange-600/30">
-          Apply as Merchant
+          Become a Merchant
         </button>
+        
       </div>
 
       {/* Right Side: Decorative Image/Box Area */}
@@ -302,6 +304,91 @@ const Services = () => {
     </div>
   </div>
 </section>
+
+{/* --- Customer Reviews Section Start --- */}
+<section className="py-24 bg-slate-50 overflow-hidden relative">
+  <div className="max-w-7xl mx-auto px-6">
+    
+    {/* Header - Now Centered */}
+    <div className="text-center mb-16">
+      <h2 className="text-orange-600 font-extrabold uppercase tracking-widest text-lg mb-3">
+        Testimonials
+      </h2>
+      <h3 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
+        What Our <span className="text-orange-600">Clients</span> Say
+      </h3>
+      <p className="text-slate-500 mt-4 max-w-lg mx-auto">
+        Discover why thousands of businesses and individuals trust Edifice for their daily deliveries.
+      </p>
+    </div>
+
+    {/* Scrollable Container */}
+    <div 
+      id="review-container"
+      className="flex gap-8 overflow-x-auto pb-10 snap-x snap-mandatory scrollbar-hide no-scrollbar"
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    >
+      {[
+        { id: 1, name: "Sarah Jenkins", role: "E-store Owner", text: "Edifice has completely changed my business. Their delivery is always on time!", rating: 5 },
+        { id: 2, name: "Michael Chen", role: "Individual Sender", text: "The live tracking feature is so accurate. Highly recommended for personal parcels!", rating: 5 },
+        { id: 3, name: "David Miller", role: "Merchant", text: "Professional and secure. Their merchant support team is always there to help.", rating: 5 },
+        { id: 4, name: "Emma Watson", role: "Online Shopper", text: "The riders are polite and the packaging is always handled with extreme care.", rating: 4 },
+        { id: 5, name: "Robert Fox", role: "Business Manager", text: "Reliable partner for our corporate logistics. We've seen a 30% reduction in delivery complaints.", rating: 5 }
+      ].map((review) => (
+        <div 
+          key={review.id}
+          className="min-w-[320px] md:min-w-[450px] bg-white p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 snap-center transition-all duration-300 hover:border-orange-200"
+        >
+          <div className="flex gap-1 mb-6 text-orange-500">
+            {[...Array(review.rating)].map((_, i) => (
+              <Star key={i} size={18} fill="currentColor" />
+            ))}
+          </div>
+
+          <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium italic">
+            "{review.text}"
+          </p>
+
+          <div className="flex items-center gap-4 border-t border-slate-50 pt-6">
+            <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-orange-600 font-black text-xl border-b-4 border-orange-600 uppercase">
+              {review.name.charAt(0)}
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-900 text-lg leading-none mb-1">{review.name}</h4>
+              <p className="text-orange-600 text-sm font-bold uppercase tracking-wider">{review.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Centered Navigation Buttons at the Bottom */}
+    <div className="flex justify-center gap-6 mt-8">
+      <button 
+        onClick={() => {
+          const container = document.getElementById('review-container');
+          container.scrollBy({ left: -400, behavior: 'smooth' });
+        }}
+        className="group p-5 rounded-full border-2 border-slate-200 bg-white hover:bg-orange-600 hover:border-orange-600 hover:text-white transition-all shadow-lg active:scale-90"
+        aria-label="Previous review"
+      >
+        <ChevronLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
+      </button>
+
+      <button 
+        onClick={() => {
+          const container = document.getElementById('review-container');
+          container.scrollBy({ left: 400, behavior: 'smooth' });
+        }}
+        className="group p-5 rounded-full border-2 border-slate-200 bg-white hover:bg-orange-600 hover:border-orange-600 hover:text-white transition-all shadow-lg active:scale-90"
+        aria-label="Next review"
+      >
+        <ChevronRight size={28} className="group-hover:translate-x-1 transition-transform" />
+      </button>
+    </div>
+  </div>
+</section>
+{/* --- Customer Reviews Section End --- */}
 
       {/* 4. Tracking CTA Section */}
       <section className="py-20 bg-orange-50">
