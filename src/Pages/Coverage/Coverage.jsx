@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Search, Globe, ChevronRight } from 'lucide-react';
+import { Search, Globe, ChevronRight, MapPin } from 'lucide-react';
 
 // Marker Icon Fix
 const customIcon = new L.Icon({
@@ -12,7 +12,7 @@ const customIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-// Eikhane tomar deya shobgulo data add kora hoyeche
+// Full Data Array
 const coverageData = [
   { "region": "Dhaka", "district": "Dhaka", "city": "Dhaka", "covered_area": ["Uttara", "Dhanmondi", "Mirpur", "Mohammadpur"], "status": "active", "longitude": 90.4125, "latitude": 23.8103 },
   { "region": "Dhaka", "district": "Faridpur", "city": "Faridpur", "covered_area": ["Goalanda", "Boalmari", "Bhanga"], "status": "active", "longitude": 89.8333, "latitude": 23.6 },
@@ -80,6 +80,17 @@ const coverageData = [
   { "region": "Khulna", "district": "Kushtia", "city": "Kushtia", "covered_area": ["Kushtia Sadar", "Kumarkhali", "Khoksa", "Mirpur", "Bheramara", "Daulatpur"], "status": "active", "longitude": 89.122, "latitude": 23.9013 }
 ];
 
+// Component to handle auto-zooming when searching
+const ZoomHandler = ({ filteredData }) => {
+  const map = useMap();
+  if (filteredData.length === 1) {
+    map.setView([filteredData[0].latitude, filteredData[0].longitude], 10, { animate: true });
+  } else if (filteredData.length === 0 || filteredData.length === coverageData.length) {
+    map.setView([23.6850, 90.3563], 7, { animate: true });
+  }
+  return null;
+};
+
 const Coverage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -102,13 +113,13 @@ const Coverage = () => {
             Our Delivery <span className="text-orange-600">Network</span>
           </h2>
           <p className="text-slate-500 max-w-2xl mx-auto font-medium">
-            Search your district and click on markers to see our specialized coverage hubs.
+            Type your district name to instantly filter the map markers.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* District List with Search */}
+          {/* Search Box & District List */}
           <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/50 border border-slate-100 h-[650px] flex flex-col">
             <div className="relative mb-8">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={22} />
@@ -116,28 +127,39 @@ const Coverage = () => {
                 type="text"
                 placeholder="Find your district..."
                 className="w-full pl-12 pr-4 py-5 bg-slate-50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all font-bold text-slate-800"
+                value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
             <div className="overflow-y-auto flex-1 pr-2 custom-scrollbar space-y-3">
-              {filteredData.map((item, idx) => (
-                <div key={idx} className="group p-5 rounded-2xl bg-slate-50 hover:bg-orange-600 transition-all cursor-pointer border border-slate-100 shadow-sm hover:shadow-orange-200">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-bold text-slate-900 group-hover:text-white transition-colors">{item.district}</h4>
-                      <p className="text-xs text-slate-500 group-hover:text-orange-100">
-                        {item.region} Division
-                      </p>
+              {filteredData.length > 0 ? (
+                filteredData.map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    onClick={() => setSearchTerm(item.district)}
+                    className="group p-5 rounded-2xl bg-slate-50 hover:bg-orange-600 transition-all cursor-pointer border border-slate-100 shadow-sm hover:shadow-orange-200"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-bold text-slate-900 group-hover:text-white transition-colors">{item.district}</h4>
+                        <p className="text-xs text-slate-500 group-hover:text-orange-100">
+                          {item.region} Division
+                        </p>
+                      </div>
+                      <ChevronRight className="text-slate-300 group-hover:text-white" size={20} />
                     </div>
-                    <ChevronRight className="text-slate-300 group-hover:text-white" size={20} />
                   </div>
+                ))
+              ) : (
+                <div className="text-center py-10">
+                  <p className="text-slate-400 font-medium">No districts found!</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
-          {/* Map */}
+          {/* Interactive Filtered Map */}
           <div className="lg:col-span-2 h-[650px] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white relative z-0">
             <MapContainer 
               center={[23.6850, 90.3563]} 
@@ -146,7 +168,11 @@ const Coverage = () => {
             >
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               
-              {coverageData.map((pos, idx) => (
+              {/* This component updates the map zoom/center when searching */}
+              <ZoomHandler filteredData={filteredData} />
+
+              {/* Filtering Markers based on search */}
+              {filteredData.map((pos, idx) => (
                 <Marker 
                   key={idx} 
                   position={[pos.latitude, pos.longitude]} 
