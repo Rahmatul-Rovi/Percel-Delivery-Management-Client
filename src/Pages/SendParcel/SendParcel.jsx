@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Package, User, Truck, CheckCircle, Calculator, Info } from 'lucide-react';
 import Swal from 'sweetalert2'; 
 import { Toaster } from 'react-hot-toast';
+import useAuth from '../../Hooks/UseAuth';
+import useAxiosSecure from '../../Hooks/UseAxiosSecure';
 
 // Bangladesh 64 Districts and Areas Data
 const coverageData = [
@@ -40,6 +42,9 @@ const SendParcel = () => {
     senderAddress: '',
     receiverAddress: '',
   });
+
+  const {user} = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const [deliveryCost, setDeliveryCost] = useState(0);
 
@@ -118,6 +123,10 @@ const SendParcel = () => {
           paymentStatus: "Unpaid",     // Default status
         };
 
+        axiosSecure.post('/parcels', finalBookingData)
+        .then(res => {
+          console.log(res.data);
+        })
         // Final Success Message
         Swal.fire({
           title: 'Booking Success!',
