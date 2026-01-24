@@ -1,8 +1,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import EdificeLogo from "../EdificeLogo/EdificeLogo";
+import useAuth from "../../../Hooks/UseAuth";
 
 const Navbar = () => {
+  const {user} = useAuth();
   // Common NavItems with updated styling
   const navItems = (
     <>
@@ -48,6 +50,26 @@ const Navbar = () => {
           Coverage
         </NavLink>
       </li>
+
+      {
+        user?.email && <li>
+       <li>
+         <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            `font-bold transition-all duration-300 px-4 py-2 rounded-lg ${
+              isActive
+                ? "bg-orange-600 text-white shadow-md shadow-orange-200"
+                : "text-slate-600 hover:text-orange-600 hover:bg-orange-50"
+            }`
+          }
+        >
+          Dashboard
+        </NavLink>
+       </li>
+       </li>
+      }
+      
       <li>
         <NavLink
           to="/about"
