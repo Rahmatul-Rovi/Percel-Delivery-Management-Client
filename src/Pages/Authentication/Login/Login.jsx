@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocilaLogin from "../SocialLogin/SocilaLogin";
+import useAuth from "../../../Hooks/UseAuth";
 
 const Login = () => {
   const {
@@ -9,6 +10,11 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const {signIn} = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
   const onSubmit = (data) => {
     console.log(data);
   };

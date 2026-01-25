@@ -4,7 +4,16 @@ import EdificeLogo from "../EdificeLogo/EdificeLogo";
 import useAuth from "../../../Hooks/UseAuth";
 
 const Navbar = () => {
-  const {user} = useAuth();
+  const {user, logOut} = useAuth();
+  const handleLogout = () => {
+    logOut()
+    .then(result => {
+      console.log(result);
+    })
+    .catch(error => {
+      console.error(error);
+    })
+  }
   // Common NavItems with updated styling
   const navItems = (
     <>
@@ -137,11 +146,16 @@ const Navbar = () => {
 
       {/* Action Button */}
       <div className="navbar-end">
-        <Link to="/login">
+      { user ?
+     <button onClick={handleLogout} className="btn bg-slate-900 hover:bg-orange-600 text-white border-none px-8 rounded-xl font-bold shadow-lg shadow-slate-200 transition-all duration-300 transform hover:scale-105 active:scale-95">
+            Logout
+          </button>
+      :
+         <Link to="/login">
           <button className="btn bg-slate-900 hover:bg-orange-600 text-white border-none px-8 rounded-xl font-bold shadow-lg shadow-slate-200 transition-all duration-300 transform hover:scale-105 active:scale-95">
             Login
           </button>
-        </Link>
+        </Link>}
       </div>
     </div>
   );
