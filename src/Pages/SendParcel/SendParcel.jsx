@@ -115,6 +115,7 @@ const SendParcel = () => {
         // Final Status Integrated Object
         const finalBookingData = {
           ...formData,
+          senderEmail: user?.email,
           trackingId: trackingId,
           deliveryCost: deliveryCost,
           creationDate: creationDate,
