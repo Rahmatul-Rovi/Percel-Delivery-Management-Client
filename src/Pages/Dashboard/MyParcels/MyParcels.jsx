@@ -3,20 +3,58 @@ import React from 'react';
 import useAuth from '../../../Hooks/UseAuth';
 import useAxiosSecure from '../../../Hooks/UseAxiosSecure';
 import { Eye, CreditCard, Trash2, Calendar, Package, Loader2 } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const MyParcels = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    // TanStack Query for fetching data
-    const { data: parcels = [], isLoading } = useQuery({
+    // 1. refetch-ke destructure koro
+    const { data: parcels = [], isLoading, refetch } = useQuery({
         queryKey: ['my-parcels', user?.email],
-        enabled: !!user?.email, // User email thaklei shudhu query cholbe
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user?.email}`);
             return res.data;
         }
     });
+
+    // 2. Delete Handler (Eita ekhon kaj korbe)
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this parcel booking!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#64748b",
+            confirmButtonText: "Yes, cancel it!",
+            background: '#ffffff',
+            color: '#0f172a'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/parcels/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            // Data delete hoye gele table auto-refresh hobe
+                            refetch(); 
+                            
+                            Swal.fire({
+                                title: "Cancelled!",
+                                text: "Your parcel booking has been deleted.",
+                                icon: "success",
+                                confirmButtonColor: '#ea580c',
+                                background: '#ffffff'
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        Swal.fire("Error!", "Something went wrong.", "error");
+                    });
+            }
+        });
+    };
 
     if (isLoading) {
         return (
@@ -29,8 +67,7 @@ const MyParcels = () => {
 
     return (
         <div className="space-y-6">
-            {/* Header Section */}
-            <div className="flex items-center justify-between px-4">
+            <div className="flex items-center justify-between px-4 pt-6">
                 <h2 className="text-3xl font-black text-slate-800 italic uppercase">
                     My <span className="text-orange-600">Parcels</span>
                 </h2>
@@ -39,7 +76,6 @@ const MyParcels = () => {
                 </div>
             </div>
 
-            {/* Table Section */}
             <div className="w-full bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="table w-full border-collapse">
@@ -59,7 +95,6 @@ const MyParcels = () => {
                                 <tr key={parcel._id} className="hover:bg-slate-50/50 transition-colors">
                                     <td className="text-center font-bold text-slate-400">{index + 1}</td>
                                     
-                                    {/* Type & Title */}
                                     <td className="py-5 px-6">
                                         <div className="flex items-center gap-3">
                                             <div className={`p-2 rounded-lg ${parcel.type === 'document' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
@@ -74,7 +109,6 @@ const MyParcels = () => {
                                         </div>
                                     </td>
 
-                                    {/* Date */}
                                     <td>
                                         <div className="flex items-center gap-2 text-slate-600 font-medium">
                                             <Calendar size={14} className="text-slate-400" />
@@ -82,12 +116,10 @@ const MyParcels = () => {
                                         </div>
                                     </td>
 
-                                    {/* Cost */}
                                     <td>
                                         <span className="font-black text-slate-900">৳{parcel.deliveryCost}</span>
                                     </td>
 
-                                    {/* Payment Status with Color Code */}
                                     <td>
                                         <div className={`badge badge-md font-black border-none py-3 px-4 ${
                                             parcel.paymentStatus === 'Paid' 
@@ -98,7 +130,6 @@ const MyParcels = () => {
                                         </div>
                                     </td>
 
-                                    {/* Actions */}
                                     <td className="text-center">
                                         <div className="flex items-center justify-center gap-2">
                                             <button className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
@@ -113,7 +144,12 @@ const MyParcels = () => {
                                                 <CreditCard size={16} />
                                             </button>
 
-                                            <button className="btn btn-square btn-sm bg-red-50 border-none text-red-500 hover:bg-red-500 hover:text-white" title="Cancel">
+                                            {/* 🚀 Fix: Eikhane onClick add korlam */}
+                                            <button 
+                                                onClick={() => handleDelete(parcel._id)}
+                                                className="btn btn-square btn-sm bg-red-50 border-none text-red-500 hover:bg-red-500 hover:text-white" 
+                                                title="Cancel"
+                                            >
                                                 <Trash2 size={16} />
                                             </button>
                                         </div>
@@ -122,14 +158,6 @@ const MyParcels = () => {
                             ))}
                         </tbody>
                     </table>
-
-                    {/* Empty State */}
-                    {parcels.length === 0 && (
-                        <div className="text-center py-20 bg-white">
-                            <Package size={48} className="mx-auto text-slate-200 mb-4" />
-                            <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">No parcels booked yet!</p>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
