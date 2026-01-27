@@ -17,9 +17,9 @@ const PaymentHistory = () => {
     },
   });
 
-  // 🔹 আপনার লজিক (Latest first sort)
+  // 🔹 Latest payment first
   const sortedPayments = [...payments].sort(
-    (a, b) => new Date(b.date) - new Date(a.date),
+    (a, b) => new Date(b.date) - new Date(a.date)
   );
 
   if (isPending) {
@@ -31,66 +31,65 @@ const PaymentHistory = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 bg-white dark:bg-slate-900 min-h-screen transition-colors duration-300">
+    <div className="p-4 md:p-8 bg-slate-50 min-h-screen">
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <div className="mb-8">
-          <h2 className="text-3xl font-extrabold text-slate-800 dark:text-orange-500 flex items-center gap-3">
-            <CreditCard size={32} />
+          <h2 className="text-3xl font-extrabold text-slate-800 flex items-center gap-3">
+            <CreditCard className="text-orange-500" size={32} />
             Payment History
           </h2>
-          <p className="text-slate-500 dark:text-slate-300 mt-2 font-medium">
+          <p className="text-slate-500 mt-2 font-medium">
             Total Transactions: {sortedPayments.length}
           </p>
         </div>
 
+        {/* Empty State */}
         {sortedPayments.length === 0 ? (
-          <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
-            <Banknote
-              className="mx-auto text-slate-300 dark:text-slate-600 mb-4"
-              size={64}
-            />
-            <p className="text-xl text-slate-500 dark:text-slate-400">
+          <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-slate-200">
+            <Banknote className="mx-auto text-slate-300 mb-4" size={64} />
+            <p className="text-xl text-slate-500">
               No payment records found.
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {/* Table Header - MyParcels style colors */}
-            <div className="hidden md:grid grid-cols-4 px-6 py-4 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-700 dark:text-orange-400 font-bold mb-2 border dark:border-slate-700">
+            {/* Table Header (Desktop) */}
+            <div className="hidden md:grid grid-cols-4 px-6 py-4 bg-slate-100 rounded-xl text-slate-700 font-bold mb-2 border border-slate-200">
               <p>Transaction ID</p>
               <p>Amount</p>
               <p>Date</p>
               <p>Status</p>
             </div>
 
-            {/* Payment Cards - MyParcels style list items */}
+            {/* Payment Rows */}
             {sortedPayments.map((payment) => (
               <div
                 key={payment._id}
-                className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group"
+                className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                   {/* Transaction ID */}
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-100 dark:bg-slate-700 rounded-lg text-orange-600 dark:text-orange-400">
+                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
                       <Hash size={18} />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wider font-bold md:hidden">
+                      <p className="text-xs text-slate-400 uppercase font-bold md:hidden">
                         Transaction ID
                       </p>
-                      <p className="font-mono text-sm text-slate-700 dark:text-slate-200 break-all">
+                      <p className="font-mono text-sm text-slate-700 break-all">
                         {payment.transactionId}
                       </p>
                     </div>
                   </div>
 
                   {/* Amount */}
-                  <div className="flex items-center gap-3">
-                    <p className="text-xs text-slate-400 uppercase tracking-wider font-bold md:hidden">
+                  <div>
+                    <p className="text-xs text-slate-400 uppercase font-bold md:hidden">
                       Amount
                     </p>
-                    <p className="text-lg font-black text-slate-800 dark:text-white">
+                    <p className="text-lg font-black text-slate-800">
                       ৳{payment.amount}
                     </p>
                   </div>
@@ -99,10 +98,10 @@ const PaymentHistory = () => {
                   <div className="flex items-center gap-3">
                     <Calendar size={18} className="text-slate-400" />
                     <div>
-                      <p className="text-xs text-slate-400 uppercase tracking-wider font-bold md:hidden">
+                      <p className="text-xs text-slate-400 uppercase font-bold md:hidden">
                         Date
                       </p>
-                      <p className="text-sm text-slate-600 dark:text-slate-300">
+                      <p className="text-sm text-slate-600">
                         {new Date(payment.date).toLocaleDateString("en-GB", {
                           day: "2-digit",
                           month: "short",
@@ -116,12 +115,7 @@ const PaymentHistory = () => {
 
                   {/* Status */}
                   <div>
-                    <span
-                      className="px-4 py-1.5 rounded-full 
-                      bg-green-100 text-green-700 
-                      dark:bg-green-500/20 dark:text-green-400
-                      text-xs font-bold uppercase tracking-widest border dark:border-green-500/30"
-                    >
+                    <span className="px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-widest border border-green-200">
                       Paid
                     </span>
                   </div>
