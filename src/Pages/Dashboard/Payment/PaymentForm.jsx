@@ -36,34 +36,44 @@ const PaymentForm = () => {
     }
   }, [amount, axiosSecure]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!stripe || !elements || !clientSecret) return;
+  if (!stripe || !elements || !clientSecret) return;
 
-    const card = elements.getElement(CardElement);
-    if (!card) return;
+  const card = elements.getElement(CardElement);
+  if (!card) return;
 
-    setProcessing(true);
-    setErrorMessage("");
+  setProcessing(true);
+  setErrorMessage("");
 
-    const { error, paymentIntent } =
-      await stripe.confirmCardPayment(clientSecret, {
-        payment_method: { card },
-      });
+  const { error, paymentIntent } =
+    await stripe.confirmCardPayment(clientSecret, {
+      payment_method: { card },
+    });
 
-    if (error) {
-      setErrorMessage(error.message);
-      setProcessing(false);
-      return;
-    }
-
-    if (paymentIntent.status === "succeeded") {
-      console.log("✅ Payment successful");
-    }
-
+  if (error) {
+    setErrorMessage(error.message);
     setProcessing(false);
-  };
+    return;
+  }
+
+  if (paymentIntent.status === "succeeded") {
+    const paymentInfo = {
+      parcelId: id,
+      email: parcelInfo.senderEmail,
+      amount: amount,
+      transactionId: paymentIntent.id,
+      date: new Date(),
+    };
+
+    await axiosSecure.post("/payments", paymentInfo);
+
+    console.log("✅ Payment successful & saved");
+  }
+
+  setProcessing(false);
+};
 
   // ✅ Conditional UI render (SAFE)
   if (isPending) {
