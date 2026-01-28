@@ -59,7 +59,7 @@ const DashBoardLayout = () => {
 
           <li className="mb-2">
             <Link
-              to="/dashboard/sendParcel"
+              to="/sendParcel"
               className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
             >
               <Send size={20} /> Send New Parcel

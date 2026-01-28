@@ -1,59 +1,87 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/UseAuth';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router'; // navigate add korlam
 import SocilaLogin from '../SocialLogin/SocilaLogin';
+import useAxios from '../../../Hooks/useAxios';
+import Swal from 'sweetalert2';
 
 const Register = () => {
-    const {register , handleSubmit, formState:{errors}} = useForm();
-    const {createUser} = useAuth();
-    const onSubmit = data =>{
-        console.log(data);
-        createUser(data.email, data.password)
-        .then(result => {
-          console.log(result.user);
-        })
-        .catch(error => {
-          console.error(error);
-        })
-    }
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { createUser } = useAuth();
+    const axiosInstance = useAxios();
+    const navigate = useNavigate();
+
+    const onSubmit = async (data) => {
+        try {
+            // ১. ফায়ারবেসে ইউজার ক্রিয়েট করা
+            const result = await createUser(data.email, data.password);
+            console.log("Firebase User:", result.user);
+
+            // ২. ইউজার ইনফো অবজেক্ট তৈরি করা (onSubmit এর ভেতরে)
+            const userInfo = {
+                email: data.email,
+                role: 'user', 
+                created_at: new Date().toISOString(),
+                last_login: new Date().toISOString()
+            };
+
+            // ৩. আপনার ডাটাবেসে ইউজার সেভ করা
+            const userRes = await axiosInstance.post('/users', userInfo);
+            
+            if (userRes.data.insertedId) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "User created successfully!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate('/'); // সাকসেস হলে হোম পেজে নিয়ে যাবে
+            }
+        } catch (error) {
+            console.error("Error during registration:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.message,
+            });
+        }
+    };
+
     return (
-    
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-      <div className="card-body">
-        <h1 className="text-5xl font-bold">Create An Account!</h1>
-       <form onSubmit={handleSubmit(onSubmit)}>
-         <fieldset className="fieldset">
-       
+        <div className="flex justify-center items-center min-h-screen bg-slate-50">
+            <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                <div className="card-body">
+                    <h1 className="text-3xl font-bold text-center">Create Account!</h1>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="form-control">
+                            <label className="label">Email</label>
+                            <input type="email" {...register('email', { required: true })} className="input input-bordered" placeholder="Email" />
+                            {errors.email && <p className='text-red-500 text-xs mt-1'>Email is required</p>}
+                        </div>
 
-          <label className="label">Email</label>
-          <input type="email" {...register('email', {required: true})} className="input" placeholder="Email" />
-          {
-            errors.email?.type === 'required' && 
-            <p className='text-red-500'>Email is required</p>
-          }
+                        <div className="form-control">
+                            <label className="label">Password</label>
+                            <input type="password" {...register('password', { required: true, minLength: 6 })} className="input input-bordered" placeholder="Password" />
+                            {errors.password?.type === 'required' && <p className='text-red-500 text-xs mt-1'>Password is required</p>}
+                            {errors.password?.type === 'minLength' && <p className='text-red-500 text-xs mt-1'>Must be 6+ characters</p>}
+                        </div>
 
-          <label className="label">Password</label>
-          <input type="password" {...register('password', {required: true, minLength: 6})} className="input" placeholder="Password" />
-           {
-            errors.password?.type === 'required' &&
-            <p className='text-red-500'>Password is required</p>
-          }
-          {
-            errors.password?.type === 'minLength' &&
-            <p className='text-red-500'>Password must be 6 characters or longer</p>
-          }
-
-          <div><a className="link link-hover">Forgot password?</a></div>
-
-          <button className="btn btn-primary mt-4">Register</button>
-        </fieldset>
-        <p><small>Already have an account? <Link className='btn-btn-link' to="/login">Login</Link> </small></p>
-       </form>
-       <SocilaLogin></SocilaLogin>
-      </div>
-    </div>
-
+                        <div className="form-control mt-6">
+                            <button className="btn btn-primary bg-orange-600 border-none hover:bg-orange-700 text-white">Register</button>
+                        </div>
+                    </form>
+                    
+                    <p className='text-center mt-4'>
+                        <small>Already have an account? <Link className='text-orange-600 font-bold' to="/login">Login</Link> </small>
+                    </p>
+                    
+                    <div className="divider">OR</div>
+                    <SocilaLogin />
+                </div>
+            </div>
+        </div>
     );
 };
 
