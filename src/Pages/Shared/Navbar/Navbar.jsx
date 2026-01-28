@@ -28,6 +28,7 @@ const Navbar = () => {
       {user?.email && (
         <li><NavLink to="/dashboard" className={navLinkStyles}>Dashboard</NavLink></li>
       )}
+       <li><NavLink to="/beARider" className={navLinkStyles}>Be a Rider</NavLink></li>
       <li><NavLink to="/about" className={navLinkStyles}>About Us</NavLink></li>
     </>
   );

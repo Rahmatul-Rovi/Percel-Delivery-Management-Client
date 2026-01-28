@@ -7,7 +7,7 @@ baseURL : `http://localhost:3000`
 });
 const useAxiosSecure = () => {
     const {user} = useAuth();
-    axiosSecure.interceptops.request.use(config => {
+    axiosSecure.interceptors.request.use(config => {
         config.headers.Authorization = `Bearer ${user?.accessToken}`
         return config;
     }, error => {
