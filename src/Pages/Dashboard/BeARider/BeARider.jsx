@@ -10,13 +10,15 @@ const BeARider = () => {
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
-  // 🔹 সার্ভিস সেন্টার ডাটা (আপনার দেওয়া লজিক অনুযায়ী)
+  // data from service center
   const serviceCenters = [
-    { region: "Dhaka", districts: ["Dhaka North", "Dhaka South", "Gazipur", "Narayanganj"] },
+    { region: "Dhaka", districts: ["Dhaka North", "Dhaka South", "Gazipur", "Narayanganj", "Tangail"] },
     { region: "Chattogram", districts: ["Chattogram City", "Cox's Bazar", "Cumilla", "Noakhali"] },
-    { region: "Rajshahi", districts: ["Rajshahi City", "Bogura", "Pabna", "Natore"] },
+    { region: "Rajshahi", districts: ["Rajshahi City", "Bogura", "Pabna", "Natore", "Naogaon", "Sirajganj"] },
     { region: "Sylhet", districts: ["Sylhet City", "Moulvibazar", "Habiganj", "Sunamganj"] },
     { region: "Khulna", districts: ["Khulna City", "Jashore", "Kushtia", "Satkhira"] },
+     { region: "Mymensingh", districts: ["Mymensingh City", "Jamalpur", "Sherpur", "Netrokona", "Modhupur"] },
+      { region: "Barishal", districts: ["Barishal City", "Jhalokati", "Barguna", "Pirojpur", "Patuakhali"] },
   ];
 
   const selectedRegion = watch("region");
@@ -32,7 +34,7 @@ const BeARider = () => {
     };
 
     try {
-      const res = await axiosSecure.post("/rider-applications", riderApplication);
+      const res = await axiosSecure.post("/riders", riderApplication);
       if (res.data.insertedId) {
         Swal.fire({
           title: "Application Submitted!",
