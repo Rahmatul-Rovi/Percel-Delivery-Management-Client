@@ -1,6 +1,16 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import { Menu, Home, Package, Send, User, History, MapPin } from "lucide-react";
+import {
+  Menu,
+  Home,
+  Package,
+  Send,
+  User,
+  History,
+  MapPin,
+  Users,
+  Clock,
+} from "lucide-react";
 
 const DashBoardLayout = () => {
   return (
@@ -91,6 +101,26 @@ const DashBoardLayout = () => {
               className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
             >
               <MapPin size={20} /> Track A Package
+            </Link>
+          </li>
+
+          {/* Active Riders Link */}
+          <li className="mb-2">
+            <Link
+              to="/dashboard/activeRiders"
+              className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+            >
+              <Users size={20} /> Active Riders
+            </Link>
+          </li>
+
+          {/* Pending Riders Link */}
+          <li className="mb-2">
+            <Link
+              to="/dashboard/pendingRiders"
+              className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+            >
+              <Clock size={20} /> Pending Riders
             </Link>
           </li>
 
