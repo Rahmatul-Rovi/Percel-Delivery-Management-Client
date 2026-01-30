@@ -12,8 +12,12 @@ import {
   Clock,
   ShieldCheck,
 } from "lucide-react";
+import useUserRole from "../Hooks/useUserRole";
 
 const DashBoardLayout = () => {
+  const { role, isRoleLoading } = useUserRole();
+  console.log(role);
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -105,7 +109,10 @@ const DashBoardLayout = () => {
             </Link>
           </li>
 
-          {/* Active Riders Link */}
+        {
+          !isRoleLoading && role==="admin" &&
+          <>
+              {/* Active Riders Link */}
           <li className="mb-2">
             <Link
               to="/dashboard/activeRiders"
@@ -126,14 +133,16 @@ const DashBoardLayout = () => {
           </li>
 
           {/* Admin Panel Link */}
-         <li className="mb-2">
-  <Link
-    to="/dashboard/makeAdmin"
-    className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
-  >
-    <ShieldCheck size={20} /> Make Admin
-  </Link>
-</li>
+          <li className="mb-2">
+            <Link
+              to="/dashboard/makeAdmin"
+              className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+            >
+              <ShieldCheck size={20} /> Make Admin
+            </Link>
+          </li>
+          </>
+        }
 
           <li className="mb-6">
             <Link
