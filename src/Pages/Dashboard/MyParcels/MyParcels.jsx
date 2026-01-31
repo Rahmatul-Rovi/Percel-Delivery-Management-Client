@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useAuth from "../../../Hooks/UseAuth";
-import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import useAuth from "../../Hooks/UseAuth";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import {
   Eye,
   CreditCard,

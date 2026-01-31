@@ -14,7 +14,7 @@ const AssignRider = () => {
     const [selectedRider, setSelectedRider] = useState("");
     const [deliveryDate, setDeliveryDate] = useState("");
 
-    // ১. পার্সেল লোড করা
+    // ১. Parcel Load
     const { data: parcels = [], isLoading } = useQuery({
         queryKey: ['assignableParcels'],
         queryFn: async () => {
@@ -23,7 +23,7 @@ const AssignRider = () => {
         }
     });
 
-    // ২. রাইডার লোড করা (পার্সেলের receiverDistrict অনুযায়ী)
+    // ২. Rider Load (By Parcels receiverDistrict)
    const { data: riders = [], isLoading: isRidersLoading } = useQuery({
         queryKey: ['riders', selectedParcel?.receiverDistrict?.trim()],
         enabled: !!selectedParcel?.receiverDistrict,
@@ -33,7 +33,7 @@ const AssignRider = () => {
         }
     });
 
-    // ৩. এসাইন করার লজিক
+    // ৩. Assigned Logic
     const assignMutation = useMutation({
         mutationFn: async (data) => {
             return await axiosSecure.patch(`/parcels/assign/${selectedParcel._id}`, data);
@@ -41,7 +41,7 @@ const AssignRider = () => {
         onSuccess: () => {
             queryClient.invalidateQueries(['assignableParcels']);
             Swal.fire("Assigned!", "Rider has been assigned successfully.", "success");
-            setSelectedParcel(null); // মোডাল বন্ধ
+            setSelectedParcel(null); // Modal Off
         }
     });
 
@@ -61,7 +61,7 @@ const AssignRider = () => {
     }
 
    return (
-        <div className="p-2 md:p-6 bg-slate-50 min-h-screen text-slate-800"> {/* এখানে বেজ কালার সেট করলাম */}
+        <div className="p-2 md:p-6 bg-slate-50 min-h-screen text-slate-800"> {/* There is using base color*/}
             <div className="max-w-[100%] mx-auto">
                 {/* Header Section */}
                 <div className="flex items-center justify-between mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
@@ -93,7 +93,7 @@ const AssignRider = () => {
                             <tbody className="divide-y divide-slate-200 text-[13px]">
                                 {parcels.map((parcel) => (
                                     <tr key={parcel._id} className="hover:bg-slate-50 transition-all">
-                                        {/* টেক্সট কালার slate-600/700 করা হয়েছে ডার্ক মোডে ভালো দেখানোর জন্য */}
+                                        {/* Text-color State set 600/700 */}
                                         <td className="px-4 py-3"><p className="font-bold text-slate-700 leading-none">{parcel.senderName}</p><p className="text-[11px] text-slate-500 mt-1">{parcel.senderEmail}</p></td>
                                         <td className="px-4 py-3"><div className="flex items-center gap-1 text-slate-600 font-medium"><MapPin size={12} className="text-orange-500 shrink-0" /><span className="truncate max-w-[120px]">{parcel.receiverCity}, {parcel.receiverDistrict}</span></div></td>
                                         <td className="px-4 py-3 text-slate-600 whitespace-nowrap font-medium">{parcel.creationDate?.split(',')[0]}</td>
@@ -130,7 +130,7 @@ const AssignRider = () => {
                                 ))}
                             </select>
 
-                            {/* রাইডার না থাকলে ওয়ার্নিং */}
+                            {/* Showing Warning without rider */}
                             {riders.length === 0 && !isRidersLoading && (
                                 <div className="p-3 bg-red-50 border border-red-100 rounded-xl">
                                     <p className="text-red-500 text-[11px] font-bold text-center italic">⚠️ No riders found in {selectedParcel.receiverDistrict}!</p>
