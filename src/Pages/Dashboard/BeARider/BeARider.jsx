@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import useAuth from "../../../Hooks/UseAuth";
-import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
+
 import Swal from "sweetalert2";
 import { User, Mail, Phone, CreditCard, Bike, MapPin, Send } from "lucide-react";
+import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import useAuth from "../../../Hooks/useAuth";
 
 const BeARider = () => {
   const { user } = useAuth();
