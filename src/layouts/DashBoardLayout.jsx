@@ -16,7 +16,7 @@ import {
 import useUserRole from "../Hooks/useUserRole";
 
 const DashBoardLayout = () => {
-  const [ role, isRoleLoading ] = useUserRole();
+  const [role, isRoleLoading] = useUserRole();
   console.log(role);
 
   return (
@@ -109,7 +109,22 @@ const DashBoardLayout = () => {
               <MapPin size={20} /> Track A Package
             </Link>
           </li>
+          {/* {Riders Links} */}
+          {!isRoleLoading && role?.toLowerCase() === "rider" && (
+            <>
+              {/* My Deliveries Link for Rider */}
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/pendingDeliveries"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <Truck size={20} /> Pending Deliveries
+                </Link>
+              </li>
+            </>
+          )}
 
+          {/* {Admins Links} */}
           {!isRoleLoading && role?.toLowerCase() === "admin" && (
             <>
               <li className="mb-2">
