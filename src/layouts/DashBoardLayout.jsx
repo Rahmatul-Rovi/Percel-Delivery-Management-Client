@@ -109,40 +109,47 @@ const DashBoardLayout = () => {
             </Link>
           </li>
 
-        {
-          !isRoleLoading && role==="admin" &&
-          <>
+          {!isRoleLoading && role === "admin" && (
+            <>
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/assignRider"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <UserPlus size={20} /> Assign Rider
+                </Link>
+              </li>
               {/* Active Riders Link */}
-          <li className="mb-2">
-            <Link
-              to="/dashboard/activeRiders"
-              className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
-            >
-              <Users size={20} /> Active Riders
-            </Link>
-          </li>
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/activeRiders"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <Users size={20} /> Active Riders
+                </Link>
+              </li>
 
-          {/* Pending Riders Link */}
-          <li className="mb-2">
-            <Link
-              to="/dashboard/pendingRiders"
-              className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
-            >
-              <Clock size={20} /> Pending Riders
-            </Link>
-          </li>
+              {/* Pending Riders Link */}
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/pendingRiders"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <Clock size={20} /> Pending Riders
+                </Link>
+              </li>
 
-          {/* Admin Panel Link */}
-          <li className="mb-2">
-            <Link
-              to="/dashboard/makeAdmin"
-              className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
-            >
-              <ShieldCheck size={20} /> Make Admin
-            </Link>
-          </li>
-          </>
-        }
+              {/* Admin Panel Link */}
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/makeAdmin"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <ShieldCheck size={20} /> Make Admin
+                </Link>
+              </li>
+            </>
+          )}
 
           <li className="mb-6">
             <Link
