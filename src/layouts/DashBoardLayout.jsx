@@ -11,11 +11,12 @@ import {
   Users,
   Clock,
   ShieldCheck,
+  UserPlus,
 } from "lucide-react";
 import useUserRole from "../Hooks/useUserRole";
 
 const DashBoardLayout = () => {
-  const { role, isRoleLoading } = useUserRole();
+  const [ role, isRoleLoading ] = useUserRole();
   console.log(role);
 
   return (
@@ -109,7 +110,7 @@ const DashBoardLayout = () => {
             </Link>
           </li>
 
-          {!isRoleLoading && role === "admin" && (
+          {!isRoleLoading && role?.toLowerCase() === "admin" && (
             <>
               <li className="mb-2">
                 <Link

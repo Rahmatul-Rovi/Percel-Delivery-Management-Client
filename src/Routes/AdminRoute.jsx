@@ -1,8 +1,8 @@
 import React, { Children } from 'react';
-import useAuth from '../Hooks/useAuth';
 import useUserRole from '../Hooks/useUserRole';
 import { Navigate } from 'react-router';
 import Forbidden from '../Pages/Forbidden/Forbidden';
+import useAuth from '../Hooks/useAuth';
 
 const AdminRoute = ({children}) => {
     const {user, loading} = useAuth();
@@ -16,7 +16,7 @@ const AdminRoute = ({children}) => {
         );
     }
 
-    if (!user || role !== "admin") {
+   if (!user || role?.toLowerCase() !== "admin") {
         return <Forbidden />; 
     }
 

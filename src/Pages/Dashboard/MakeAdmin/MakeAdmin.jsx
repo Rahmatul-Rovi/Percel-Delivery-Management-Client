@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import {
   Search,
@@ -39,6 +39,7 @@ const MakeAdmin = () => {
     enabled: !!debouncedEmail,
   });
 
+  const queryClient = useQueryClient();
   // 3. Mutation for Updating Role
   const roleMutation = useMutation({
     mutationFn: async ({ id, newRole }) => {

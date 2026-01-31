@@ -3,7 +3,7 @@ import { Package, User, Truck, CheckCircle, Calculator } from 'lucide-react';
 import Swal from 'sweetalert2'; 
 import { Toaster } from 'react-hot-toast';
 import useAuth from '../../Hooks/useAuth';
-import useAxiosSecure from '../../Hooks/UseAxiosSecure';
+import useAxiosSecure from '../../Hooks/useAxiosSecure';
 
 
 // BeARider এর সাথে ১০০% ম্যাচ করা ডাটা
