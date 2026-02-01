@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useAuth from "../../Hooks/UseAuth";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+
+
 import {
   Eye,
   CreditCard,
@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import useAuth from "../../../Hooks/UseAuth";
 
 const MyParcels = () => {
   const { user } = useAuth();
