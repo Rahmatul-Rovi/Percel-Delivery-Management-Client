@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Truck, UserCheck, Package, Loader2, MapPin, X, CalendarDays } from 'lucide-react';
 import Swal from 'sweetalert2';
-import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import useAxiosSecure from '../../../Hooks/UseAxiosSecure';
+
 
 const AssignRider = () => {
     const axiosSecure = useAxiosSecure();

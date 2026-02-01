@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   UserPlus,
   Truck,
+  CheckCircle,
 } from "lucide-react";
 import useUserRole from "../Hooks/useUserRole";
 
@@ -120,6 +121,14 @@ const DashBoardLayout = () => {
                   className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
                 >
                   <Truck size={20} /> Pending Deliveries
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/completedDeliveries"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <CheckCircle size={20} /> My Completed Deliveries
                 </Link>
               </li>
             </>
