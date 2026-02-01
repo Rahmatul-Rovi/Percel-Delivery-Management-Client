@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Package, User, Truck, CheckCircle, Calculator } from 'lucide-react';
 import Swal from 'sweetalert2'; 
 import { Toaster } from 'react-hot-toast';
-import useAuth from '../../Hooks/useAuth';
-import useAxiosSecure from '../../Hooks/useAxiosSecure';
+import useAuth from '../../Hooks/UseAuth';
+import useAxiosSecure from '../../Hooks/UseAxiosSecure';
+
 
 
 // BeARider এর সাথে ১০০% ম্যাচ করা ডাটা
@@ -16,6 +17,8 @@ const coverageData = [
   { region: "Mymensingh", districts: ["Mymensingh City", "Jamalpur", "Sherpur", "Netrokona", "Modhupur"] },
   { region: "Barishal", districts: ["Barishal City", "Jhalokati", "Barguna", "Pirojpur", "Patuakhali"] },
 ];
+
+
 
 const SendParcel = () => {
   const { user } = useAuth();
@@ -71,39 +74,49 @@ const SendParcel = () => {
   };
 
   const handleBooking = (e) => {
-    e.preventDefault();
-    const trackingId = "TRK-" + Math.floor(100000 + Math.random() * 900000);
-    const creationDate = new Date().toLocaleString('en-GB');
+  e.preventDefault();
+  const trackingId = "TRK-" + Math.floor(100000 + Math.random() * 900000);
+  const creationDate = new Date().toLocaleString('en-GB');
 
-    Swal.fire({
-      title: 'Confirm Booking?',
-      text: `Total Bill: ৳${deliveryCost}`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#ea580c',
-      confirmButtonText: 'Confirm Order'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const finalBookingData = {
-          ...formData,
-          senderEmail: user?.email,
-          trackingId,
-          deliveryCost,
-          creationDate,
-          pickupStatus: "Pending",
-          deliveryStatus: "Processing",
-          paymentStatus: "Unpaid",
-          serviceCenter: formData.receiverDistrict
-        };
-
-        axiosSecure.post('/parcels', finalBookingData).then(res => {
-          if(res.data.insertedId) {
-            Swal.fire({ title: 'Booking Success!', icon: 'success', confirmButtonColor: '#ea580c' });
+  Swal.fire({
+    title: 'Confirm Booking?',
+    text: `Total Bill: ৳${deliveryCost}`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#ea580c',
+    confirmButtonText: 'Confirm Order'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // এখানে trackingHistory অ্যারেটি যোগ করা হয়েছে
+      const finalBookingData = {
+        ...formData,
+        senderEmail: user?.email,
+        trackingId,
+        deliveryCost,
+        creationDate,
+        pickupStatus: "Pending",
+        deliveryStatus: "Processing",
+        paymentStatus: "Unpaid",
+        serviceCenter: formData.receiverDistrict,
+        // প্রথম ট্র্যাকিং স্টেজ
+        trackingHistory: [
+          {
+            status: "Submitted",
+            time: new Date().toLocaleString(),
+            message: "Parcel details have been submitted and are awaiting confirmation.",
           }
-        });
-      }
-    });
-  };
+        ]
+      };
+
+      axiosSecure.post('/parcels', finalBookingData).then(res => {
+        if(res.data.insertedId) {
+          Swal.fire({ title: 'Booking Success!', icon: 'success', confirmButtonColor: '#ea580c' });
+          // ফর্ম রিসেট বা রিডাইরেক্ট করতে পারেন এখানে
+        }
+      });
+    }
+  });
+};
 
   const inputStyle = "w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-orange-500 font-semibold outline-none transition-all text-slate-800 placeholder:text-slate-400 shadow-sm";
   const labelStyle = "block text-xs font-black text-slate-500 mb-2 uppercase tracking-widest ml-1";

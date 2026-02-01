@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
-import { Search, MapPin, Package, Clock, CheckCircle2 } from "lucide-react";
+import { Search, MapPin, Package, Clock, CheckCircle2, Navigation } from "lucide-react";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const TrackParcel = () => {
-  const { id } = useParams(); // URL থেকে আইডি নিবে
+  const { id } = useParams();
   const [searchId, setSearchId] = useState(id || "");
   const axiosSecure = useAxiosSecure();
 
-  // ট্র্যাকিং ডাটা ফেচ করার কুয়েরি
   const { data: trackingDetails, isLoading, refetch, isError } = useQuery({
     queryKey: ["track", searchId],
-    enabled: !!searchId, // শুধু সার্চ আইডি থাকলে রান করবে
+    enabled: !!searchId,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/tracking/${searchId}`);
+      // তোমার এপিআই এন্ডপয়েন্ট অনুযায়ী এটা /track-parcel হতে পারে
+      const res = await axiosSecure.get(`/track-parcel/${searchId}`);
       return res.data;
     },
   });
 
   const handleSearch = (e) => {
     e.preventDefault();
-    refetch();
+    if (searchId.trim()) refetch();
   };
 
   return (
@@ -32,7 +32,7 @@ const TrackParcel = () => {
           <h2 className="text-4xl font-black italic tracking-tighter text-slate-800 uppercase">
             Track Your <span className="text-orange-600">Package</span>
           </h2>
-          <p className="text-slate-500 font-medium mt-2">Enter your tracking ID to see real-time updates</p>
+          <p className="text-slate-500 font-medium mt-2">Enter your tracking ID for real-time updates</p>
         </div>
 
         {/* Search Box */}
@@ -50,16 +50,11 @@ const TrackParcel = () => {
           </button>
         </form>
 
-        {/* Tracking UI */}
-        {isLoading && (
-          <div className="text-center py-10">
-            <span className="loading loading-spinner loading-lg text-orange-600"></span>
-          </div>
-        )}
+        {isLoading && <div className="text-center py-10"><span className="loading loading-spinner loading-lg text-orange-600"></span></div>}
 
         {isError && (
           <div className="bg-red-50 text-red-600 p-6 rounded-3xl text-center font-bold border border-red-100 uppercase tracking-widest">
-            Invalid Tracking ID! Please check again.
+            Parcel Not Found! Please check the ID.
           </div>
         )}
 
@@ -72,38 +67,34 @@ const TrackParcel = () => {
                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Tracking ID</p>
                   <h3 className="text-2xl font-black text-slate-800">{trackingDetails.trackingId}</h3>
                </div>
-               <div className="bg-orange-50 text-orange-600 px-6 py-2 rounded-full font-black text-xs uppercase border border-orange-100">
-                  {trackingDetails.status || "In Processing"}
+               <div className="bg-orange-50 text-orange-600 px-6 py-2 rounded-full font-black text-xs uppercase border border-orange-100 flex items-center gap-2">
+                  <Navigation size={14} /> {trackingDetails.deliveryStatus || "Processing"}
                </div>
             </div>
 
-            {/* Timeline Look */}
+            {/* Timeline View */}
             <div className="relative space-y-12">
-              {/* Vertical Line */}
               <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
 
-              {/* Status Points (Database থেকে ম্যাপ করবেন) */}
-              {trackingDetails.updates?.map((update, index) => (
-                <div key={index} className="relative pl-12">
+              {/* trackingHistory ম্যাপ করা হচ্ছে (Reverse করে যাতে লেটেস্ট উপরে থাকে) */}
+              {[...(trackingDetails.trackingHistory || [])].reverse().map((update, index) => (
+                <div key={index} className="relative pl-12 animate-in fade-in slide-in-from-left-4 duration-500">
                   {/* Dot */}
-                  <div className={`absolute left-0 top-1 w-8 h-8 rounded-full border-4 border-white shadow-md flex items-center justify-center ${index === 0 ? 'bg-orange-600' : 'bg-slate-200'}`}>
-                    {index === 0 ? <Package size={14} className="text-white" /> : <Clock size={12} className="text-slate-500" />}
+                  <div className={`absolute left-0 top-1 w-8 h-8 rounded-full border-4 border-white shadow-md flex items-center justify-center ${index === 0 ? 'bg-orange-600 animate-pulse' : 'bg-green-500'}`}>
+                    {index === 0 ? <Package size={14} className="text-white" /> : <CheckCircle2 size={14} className="text-white" />}
                   </div>
                   
                   {/* Content */}
                   <div>
-                    <p className={`text-lg font-black ${index === 0 ? 'text-slate-800' : 'text-slate-400'}`}>
+                    <p className={`text-lg font-black ${index === 0 ? 'text-slate-800' : 'text-slate-500'}`}>
                       {update.status}
                     </p>
-                    <p className="text-slate-500 text-sm font-medium flex items-center gap-1 mt-1">
-                      <MapPin size={12} /> {update.location}
+                    <p className="text-slate-400 text-xs font-bold mt-1 uppercase">
+                      {update.time}
                     </p>
-                    <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-tighter">
-                      {new Date(update.timestamp).toLocaleString()}
-                    </p>
-                    {update.description && (
-                      <p className="mt-2 text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100 inline-block text-sm">
-                        {update.description}
+                    {update.message && (
+                      <p className="mt-2 text-slate-600 bg-slate-50 p-4 rounded-2xl border border-slate-100 inline-block text-sm leading-relaxed">
+                        {update.message}
                       </p>
                     )}
                   </div>
@@ -111,10 +102,13 @@ const TrackParcel = () => {
               ))}
             </div>
 
-            <div className="mt-12 pt-8 border-t border-slate-100 flex justify-center">
+            <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+               <div className="text-sm text-slate-400 font-bold italic">
+                 Route: {trackingDetails.senderDistrict} → {trackingDetails.receiverDistrict}
+               </div>
                <div className="flex items-center gap-2 text-green-600 font-bold bg-green-50 px-6 py-3 rounded-2xl">
                  <CheckCircle2 size={18} />
-                 <span>Trusted Parcel Delivery</span>
+                 <span>Verified Delivery System</span>
                </div>
             </div>
           </div>

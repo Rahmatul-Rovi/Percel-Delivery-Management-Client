@@ -20,7 +20,8 @@ const CompletedDeliveries = () => {
     });
 
     // টোটাল আর্নিং ক্যালকুলেশন
-    const totalEarnings = completedTasks.reduce((acc, curr) => acc + (curr.earnings || 0), 0);
+    // আপনার কোডে এই অংশটি ঠিক আছে কিনা মিলিয়ে নিন
+const totalEarnings = completedTasks.reduce((acc, curr) => acc + (Number(curr.earnings) || 0), 0);
 
     const handleCashout = async (item) => {
         try {
@@ -86,8 +87,8 @@ const CompletedDeliveries = () => {
                             <thead>
                                 <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
                                     <th className="p-4">Recipient & ID</th>
-                                    <th className="p-4">Route</th>
-                                    <th className="p-4">Date</th>
+                                    <th className="p-4">Delivery Route</th>
+                                    <th className="p-4">Delivery Status</th>
                                     <th className="p-4">Delivery Fee</th>
                                     <th className="p-4 text-green-400">Your Earnings</th>
                                     <th className="p-4 text-center">Action</th>
