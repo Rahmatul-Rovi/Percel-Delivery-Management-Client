@@ -123,6 +123,17 @@ const MyParcels = () => {
     );
   }
 
+  // ১. মোট কয়টা পার্সেল বুক হয়েছে
+const totalBookings = parcels.length;
+
+// ২. কত টাকা পেমেন্ট করা হয়েছে (Paid status চেক করে)
+const totalPaidAmount = parcels
+  .filter(p => p.paymentStatus?.toLowerCase() === 'paid')
+  .reduce((sum, p) => sum + (Number(p.deliveryCost) || 0), 0);
+
+// ৩. কয়টা পার্সেল এখনো পেন্ডিং আছে
+const pendingParcels = parcels.filter(p => p.deliveryStatus?.toLowerCase() === 'pending').length;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-4 pt-6">
@@ -133,6 +144,39 @@ const MyParcels = () => {
           Total: {parcels.length}
         </div>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 px-4">
+  {/* কার্ড ১: টোটাল বুকিং */}
+  <div className="bg-orange-600 p-6 rounded-[2rem] text-white shadow-xl shadow-orange-100 flex items-center justify-between group">
+    <div>
+      <p className="text-orange-100 text-xs font-bold uppercase tracking-widest">Total Bookings</p>
+      <h3 className="text-4xl font-black italic">{totalBookings}</h3>
+    </div>
+    <Package size={48} className="opacity-20 group-hover:scale-110 transition-transform" />
+  </div>
+
+  {/* কার্ড ২: পেইড অ্যামাউন্ট */}
+  <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl flex items-center gap-4">
+    <div className="p-3 bg-green-100 text-green-600 rounded-2xl">
+      <CreditCard size={24} />
+    </div>
+    <div>
+      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Total Paid</p>
+      <h3 className="text-2xl font-black text-slate-800 italic">৳{totalPaidAmount}</h3>
+    </div>
+  </div>
+
+  {/* কার্ড ৩: পেন্ডিং পার্সেল */}
+  <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl flex items-center gap-4">
+    <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl">
+      <Loader2 size={24} className="animate-spin" />
+    </div>
+    <div>
+      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Pending</p>
+      <h3 className="text-2xl font-black text-slate-800 italic">{pendingParcels}</h3>
+    </div>
+  </div>
+</div>
 
       <div className="w-full bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
