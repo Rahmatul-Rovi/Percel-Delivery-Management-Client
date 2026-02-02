@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-
-
 import {
   Eye,
   CreditCard,
@@ -9,22 +7,18 @@ import {
   Calendar,
   Package,
   Loader2,
+  Star
 } from "lucide-react";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import useAuth from "../../../Hooks/UseAuth";
+import useAuth from "../../../Hooks/useAuth";
 
 const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // 1. refetch-ke destructure koro
-  const {
-    data: parcels = [],
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: parcels = [], isLoading, refetch } = useQuery({
     queryKey: ["my-parcels", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -33,7 +27,6 @@ const MyParcels = () => {
     },
   });
 
-  // 2. Delete Handler (Eita ekhon kaj korbe)
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -43,32 +36,57 @@ const MyParcels = () => {
       confirmButtonColor: "#ef4444",
       cancelButtonColor: "#64748b",
       confirmButtonText: "Yes, cancel it!",
-      background: "#ffffff",
-      color: "#0f172a",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure
-          .delete(`/parcels/${id}`)
-          .then((res) => {
-            if (res.data.deletedCount > 0) {
-              // Data delete hoye gele table auto-refresh hobe
-              refetch();
-
-              Swal.fire({
-                title: "Cancelled!",
-                text: "Your parcel booking has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#ea580c",
-                background: "#ffffff",
-              });
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            Swal.fire("Error!", "Something went wrong.", "error");
-          });
+        axiosSecure.delete(`/parcels/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            refetch();
+            Swal.fire("Cancelled!", "Booking deleted.", "success");
+          }
+        });
       }
     });
+  };
+
+  const handleReview = async (parcel) => {
+    const { value: formValues } = await Swal.fire({
+      title: `<span class="text-orange-600">Rate Your Rider</span>`,
+      html: `
+        <div class="flex flex-col gap-4">
+          <input id="swal-rating" type="number" min="1" max="5" placeholder="Rating (1-5)" class="swal2-input !w-full !m-0">
+          <textarea id="swal-comment" placeholder="Write your experience..." class="swal2-textarea !w-full !m-0 h-24"></textarea>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Submit Review',
+      confirmButtonColor: '#ea580c',
+      preConfirm: () => {
+        const rating = document.getElementById('swal-rating').value;
+        const comment = document.getElementById('swal-comment').value;
+        if (!rating || rating < 1 || rating > 5) {
+          Swal.showValidationMessage('Please enter a rating between 1 and 5');
+        }
+        return { rating, comment };
+      }
+    });
+
+    if (formValues) {
+      const reviewData = {
+        riderEmail: parcel.riderEmail,
+        parcelId: parcel._id,
+        rating: Number(formValues.rating),
+        comment: formValues.comment,
+        userName: user?.displayName,
+        userImage: user?.photoURL,
+        date: new Date().toLocaleDateString()
+      };
+
+      axiosSecure.post('/reviews', reviewData).then(res => {
+        if (res.data.insertedId) {
+          Swal.fire("Success!", "Review submitted.", "success");
+        }
+      });
+    }
   };
 
   if (isLoading) {
@@ -107,66 +125,50 @@ const MyParcels = () => {
 
             <tbody className="divide-y divide-slate-50">
               {parcels.map((parcel, index) => (
-                <tr
-                  key={parcel._id}
-                  className="hover:bg-slate-50/50 transition-colors"
-                >
-                  <td className="text-center font-bold text-slate-400">
-                    {index + 1}
-                  </td>
-
+                <tr key={parcel._id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="text-center font-bold text-slate-400">{index + 1}</td>
                   <td className="py-5 px-6">
                     <div className="flex items-center gap-3">
-                      <div
-                        className={`p-2 rounded-lg ${parcel.type === "document" ? "bg-blue-100 text-blue-600" : "bg-purple-100 text-purple-600"}`}
-                      >
+                      <div className={`p-2 rounded-lg ${parcel.type === "document" ? "bg-blue-100 text-blue-600" : "bg-purple-100 text-purple-600"}`}>
                         <Package size={18} />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-800">
-                          {parcel.title}
-                        </div>
-                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
-                          ID: {parcel.trackingId}
-                        </div>
+                        <div className="font-bold text-slate-800">{parcel.title}</div>
+                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">ID: {parcel.trackingId}</div>
                       </div>
                     </div>
                   </td>
-
                   <td>
                     <div className="flex items-center gap-2 text-slate-600 font-medium">
                       <Calendar size={14} className="text-slate-400" />
-                      {parcel.creationDate.split(",")[0]}
+                      {parcel.creationDate?.split(",")[0]}
                     </div>
                   </td>
-
+                  <td><span className="font-black text-slate-900">৳{parcel.deliveryCost}</span></td>
                   <td>
-                    <span className="font-black text-slate-900">
-                      ৳{parcel.deliveryCost}
-                    </span>
-                  </td>
-
-                  <td>
-                    <div
-                      className={`badge badge-md font-black border-none py-3 px-4 ${
-                        parcel.paymentStatus === "Paid"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-600"
-                      }`}
-                    >
+                    <div className={`badge badge-md font-black border-none py-3 px-4 ${parcel.paymentStatus === "Paid" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
                       {parcel.paymentStatus}
                     </div>
                   </td>
-
                   <td className="text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <button
-                        className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200"
-                        title="View"
-                      >
+                      {/* Review Button */}
+                      {parcel.deliveryStatus === 'delivered' && (
+                        <button
+                          onClick={() => handleReview(parcel)}
+                          className="btn btn-square btn-sm bg-yellow-50 border-none text-yellow-600 hover:bg-yellow-500 hover:text-white"
+                          title="Give Review"
+                        >
+                          <Star size={16} />
+                        </button>
+                      )}
+
+                      {/* View Button */}
+                      <button className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
                         <Eye size={16} />
                       </button>
 
+                      {/* Pay Button */}
                       <Link to={`/dashboard/payment/${parcel._id}`}>
                         <button
                           disabled={parcel.paymentStatus === "Paid"}
@@ -177,7 +179,7 @@ const MyParcels = () => {
                         </button>
                       </Link>
 
-                      {/* 🚀 Fix: Eikhane onClick add korlam */}
+                      {/* Cancel/Delete Button */}
                       <button
                         onClick={() => handleDelete(parcel._id)}
                         className="btn btn-square btn-sm bg-red-50 border-none text-red-500 hover:bg-red-500 hover:text-white"

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import EdificeLogo from "../EdificeLogo/EdificeLogo";
-import useAuth from "../../../Hooks/UseAuth";
+import useAuth from "../../../Hooks/useAuth";
+
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -30,6 +31,7 @@ const Navbar = () => {
       )}
        <li><NavLink to="/beARider" className={navLinkStyles}>Be a Rider</NavLink></li>
       <li><NavLink to="/about" className={navLinkStyles}>About Us</NavLink></li>
+         <li><NavLink to="/about" className={navLinkStyles}>Contact Us</NavLink></li>
     </>
   );
 
