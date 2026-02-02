@@ -48,25 +48,27 @@ const MyParcels = () => {
     });
   };
 
-  const handleView = (parcel) => {
+ const handleView = (parcel) => {
   Swal.fire({
     title: `<span class="text-orange-600 font-black italic uppercase">Parcel Details</span>`,
     html: `
-      <div class="text-left space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
-        <p><strong>Tracking ID:</strong> <span class="text-blue-600">${parcel.trackingId}</span></p>
-        <p><strong>Title:</strong> ${parcel.title}</p>
-        <p><strong>Type:</strong> ${parcel.type}</p>
-        <p><strong>Status:</strong> <span class="badge badge-warning">${parcel.deliveryStatus}</span></p>
-        <p><strong>Receiver:</strong> ${parcel.receiverName}</p>
-        <p><strong>Phone:</strong> ${parcel.receiverPhone}</p>
-        <p><strong>Address:</strong> ${parcel.deliveryAddress}</p>
-        <p><strong>Weight:</strong> ${parcel.parcelWeight} kg</p>
-        <p><strong>Cost:</strong> ৳${parcel.deliveryCost}</p>
+      <div class="text-left space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-sm">
+        <p><strong>Tracking ID:</strong> <span class="text-blue-600 font-bold">${parcel.trackingId || 'N/A'}</span></p>
+        <p><strong>Title:</strong> ${parcel.title || 'N/A'}</p>
+        <p><strong>Type:</strong> ${parcel.type || 'N/A'}</p>
+        <p><strong>Status:</strong> <span class="badge badge-warning text-xs">${parcel.deliveryStatus || 'Pending'}</span></p>
+        <hr class="my-2 border-slate-200">
+        <p><strong>Receiver Name:</strong> ${parcel.receiverName || 'N/A'}</p>
+        <p><strong>Receiver Contact:</strong> ${parcel.receiverContact || 'N/A'}</p>
+        <p><strong>Address:</strong> ${parcel.receiverAddress || 'N/A'}, ${parcel.receiverDistrict || ''}</p>
+        <hr class="my-2 border-slate-200">
+        <p><strong>Weight:</strong> ${parcel.weight || 0} kg</p>
+        <p><strong>Cost:</strong> ৳${parcel.deliveryCost || 0}</p>
+        <p><strong>Payment:</strong> <span class="uppercase font-bold">${parcel.paymentStatus || 'unpaid'}</span></p>
       </div>
     `,
     confirmButtonColor: "#ea580c",
     confirmButtonText: "Close",
-    background: "#ffffff",
     showCloseButton: true
   });
 };
@@ -187,7 +189,7 @@ const MyParcels = () => {
                       )}
 
                       {/* View Button */}
-                      <button onClick={handleView} className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
+                      <button onClick={() => handleView(parcel)} className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
                         <Eye size={16} />
                       </button>
 
