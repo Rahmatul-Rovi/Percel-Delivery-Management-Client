@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <EdificeLogo />
-            <span className="text-2xl font-bold text-white tracking-tight">Edifice Logistics</span>
+            <span className="text-2xl font-bold text-white tracking-tight"></span>
           </div>
           <p className="text-sm leading-relaxed text-slate-400">
             Simplifying logistics for a modern world. We provide fast, secure, and reliable delivery solutions tailored to your business and personal needs since 1992.
@@ -58,7 +58,7 @@ const Footer = () => {
           <ul className="space-y-4 text-sm">
             <li className="flex items-start gap-3">
               <MapPin size={20} className="text-orange-500 shrink-0" />
-              <span>123 Delivery Lane, Tech City, TC 54321</span>
+              <span>123 Delivery Lane, Dhaka City, TC 54321</span>
             </li>
             <li className="flex items-center gap-3">
               <Phone size={18} className="text-orange-500 shrink-0" />
@@ -77,7 +77,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
           <p>Copyright © {new Date().getFullYear()} Edifice Logistics. All rights reserved.</p>
           <div className="flex gap-6">
-            <span>Powered by ACME Industries</span>
+            <span>Powered by Edifice Logistics</span>
           </div>
         </div>
       </div>
