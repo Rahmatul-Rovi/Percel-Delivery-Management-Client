@@ -48,6 +48,29 @@ const MyParcels = () => {
     });
   };
 
+  const handleView = (parcel) => {
+  Swal.fire({
+    title: `<span class="text-orange-600 font-black italic uppercase">Parcel Details</span>`,
+    html: `
+      <div class="text-left space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+        <p><strong>Tracking ID:</strong> <span class="text-blue-600">${parcel.trackingId}</span></p>
+        <p><strong>Title:</strong> ${parcel.title}</p>
+        <p><strong>Type:</strong> ${parcel.type}</p>
+        <p><strong>Status:</strong> <span class="badge badge-warning">${parcel.deliveryStatus}</span></p>
+        <p><strong>Receiver:</strong> ${parcel.receiverName}</p>
+        <p><strong>Phone:</strong> ${parcel.receiverPhone}</p>
+        <p><strong>Address:</strong> ${parcel.deliveryAddress}</p>
+        <p><strong>Weight:</strong> ${parcel.parcelWeight} kg</p>
+        <p><strong>Cost:</strong> ৳${parcel.deliveryCost}</p>
+      </div>
+    `,
+    confirmButtonColor: "#ea580c",
+    confirmButtonText: "Close",
+    background: "#ffffff",
+    showCloseButton: true
+  });
+};
+
   const handleReview = async (parcel) => {
     const { value: formValues } = await Swal.fire({
       title: `<span class="text-orange-600">Rate Your Rider</span>`,
@@ -164,7 +187,7 @@ const MyParcels = () => {
                       )}
 
                       {/* View Button */}
-                      <button className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
+                      <button onClick={handleView} className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
                         <Eye size={16} />
                       </button>
 
