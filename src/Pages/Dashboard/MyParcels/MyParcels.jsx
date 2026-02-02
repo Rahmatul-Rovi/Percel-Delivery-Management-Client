@@ -7,7 +7,7 @@ import {
   Calendar,
   Package,
   Loader2,
-  Star
+  Star,
 } from "lucide-react";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
@@ -18,7 +18,11 @@ const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [], isLoading, refetch } = useQuery({
+  const {
+    data: parcels = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["my-parcels", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -48,30 +52,30 @@ const MyParcels = () => {
     });
   };
 
- const handleView = (parcel) => {
-  Swal.fire({
-    title: `<span class="text-orange-600 font-black italic uppercase">Parcel Details</span>`,
-    html: `
+  const handleView = (parcel) => {
+    Swal.fire({
+      title: `<span class="text-orange-600 font-black italic uppercase">Parcel Details</span>`,
+      html: `
       <div class="text-left space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-sm">
-        <p><strong>Tracking ID:</strong> <span class="text-blue-600 font-bold">${parcel.trackingId || 'N/A'}</span></p>
-        <p><strong>Title:</strong> ${parcel.title || 'N/A'}</p>
-        <p><strong>Type:</strong> ${parcel.type || 'N/A'}</p>
-        <p><strong>Status:</strong> <span class="badge badge-warning text-xs">${parcel.deliveryStatus || 'Pending'}</span></p>
+        <p><strong>Tracking ID:</strong> <span class="text-blue-600 font-bold">${parcel.trackingId || "N/A"}</span></p>
+        <p><strong>Title:</strong> ${parcel.title || "N/A"}</p>
+        <p><strong>Type:</strong> ${parcel.type || "N/A"}</p>
+        <p><strong>Status:</strong> <span class="badge badge-warning text-xs">${parcel.deliveryStatus || "Pending"}</span></p>
         <hr class="my-2 border-slate-200">
-        <p><strong>Receiver Name:</strong> ${parcel.receiverName || 'N/A'}</p>
-        <p><strong>Receiver Contact:</strong> ${parcel.receiverContact || 'N/A'}</p>
-        <p><strong>Address:</strong> ${parcel.receiverAddress || 'N/A'}, ${parcel.receiverDistrict || ''}</p>
+        <p><strong>Receiver Name:</strong> ${parcel.receiverName || "N/A"}</p>
+        <p><strong>Receiver Contact:</strong> ${parcel.receiverContact || "N/A"}</p>
+        <p><strong>Address:</strong> ${parcel.receiverAddress || "N/A"}, ${parcel.receiverDistrict || ""}</p>
         <hr class="my-2 border-slate-200">
         <p><strong>Weight:</strong> ${parcel.weight || 0} kg</p>
         <p><strong>Cost:</strong> ৳${parcel.deliveryCost || 0}</p>
-        <p><strong>Payment:</strong> <span class="uppercase font-bold">${parcel.paymentStatus || 'unpaid'}</span></p>
+        <p><strong>Payment:</strong> <span class="uppercase font-bold">${parcel.paymentStatus || "unpaid"}</span></p>
       </div>
     `,
-    confirmButtonColor: "#ea580c",
-    confirmButtonText: "Close",
-    showCloseButton: true
-  });
-};
+      confirmButtonColor: "#ea580c",
+      confirmButtonText: "Close",
+      showCloseButton: true,
+    });
+  };
 
   const handleReview = async (parcel) => {
     const { value: formValues } = await Swal.fire({
@@ -83,16 +87,16 @@ const MyParcels = () => {
         </div>
       `,
       showCancelButton: true,
-      confirmButtonText: 'Submit Review',
-      confirmButtonColor: '#ea580c',
+      confirmButtonText: "Submit Review",
+      confirmButtonColor: "#ea580c",
       preConfirm: () => {
-        const rating = document.getElementById('swal-rating').value;
-        const comment = document.getElementById('swal-comment').value;
+        const rating = document.getElementById("swal-rating").value;
+        const comment = document.getElementById("swal-comment").value;
         if (!rating || rating < 1 || rating > 5) {
-          Swal.showValidationMessage('Please enter a rating between 1 and 5');
+          Swal.showValidationMessage("Please enter a rating between 1 and 5");
         }
         return { rating, comment };
-      }
+      },
     });
 
     if (formValues) {
@@ -103,10 +107,10 @@ const MyParcels = () => {
         comment: formValues.comment,
         userName: user?.displayName,
         userImage: user?.photoURL,
-        date: new Date().toLocaleDateString()
+        date: new Date().toLocaleDateString(),
       };
 
-      axiosSecure.post('/reviews', reviewData).then(res => {
+      axiosSecure.post("/reviews", reviewData).then((res) => {
         if (res.data.insertedId) {
           Swal.fire("Success!", "Review submitted.", "success");
         }
@@ -124,15 +128,17 @@ const MyParcels = () => {
   }
 
   // ১. মোট কয়টা পার্সেল বুক হয়েছে
-const totalBookings = parcels.length;
+  const totalBookings = parcels.length;
 
-// ২. কত টাকা পেমেন্ট করা হয়েছে (Paid status চেক করে)
-const totalPaidAmount = parcels
-  .filter(p => p.paymentStatus?.toLowerCase() === 'paid')
-  .reduce((sum, p) => sum + (Number(p.deliveryCost) || 0), 0);
+  // ২. কত টাকা পেমেন্ট করা হয়েছে (Paid status চেক করে)
+  const totalPaidAmount = parcels
+    .filter((p) => p.paymentStatus?.toLowerCase() === "paid")
+    .reduce((sum, p) => sum + (Number(p.deliveryCost) || 0), 0);
 
-// ৩. কয়টা পার্সেল এখনো পেন্ডিং আছে
-const pendingParcels = parcels.filter(p => p.deliveryStatus?.toLowerCase() === 'pending').length;
+ // ৩. কয়টা পার্সেল এখনো Unpaid আছে (jegulo-ke tumi pending bolte chao)
+const pendingParcels = parcels.filter(p => 
+  p.paymentStatus?.toLowerCase() === 'unpaid'
+).length;
 
   return (
     <div className="space-y-6">
@@ -146,37 +152,48 @@ const pendingParcels = parcels.filter(p => p.deliveryStatus?.toLowerCase() === '
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 px-4">
-  {/* কার্ড ১: টোটাল বুকিং */}
-  <div className="bg-orange-600 p-6 rounded-[2rem] text-white shadow-xl shadow-orange-100 flex items-center justify-between group">
-    <div>
-      <p className="text-orange-100 text-xs font-bold uppercase tracking-widest">Total Bookings</p>
-      <h3 className="text-4xl font-black italic">{totalBookings}</h3>
-    </div>
-    <Package size={48} className="opacity-20 group-hover:scale-110 transition-transform" />
-  </div>
+        {/* কার্ড ১: টোটাল বুকিং */}
+        <div className="bg-orange-600 p-6 rounded-[2rem] text-white shadow-xl shadow-orange-100 flex items-center justify-between group">
+          <div>
+            <p className="text-orange-100 text-xs font-bold uppercase tracking-widest">
+              Total Bookings
+            </p>
+            <h3 className="text-4xl font-black italic">{totalBookings}</h3>
+          </div>
+          <Package
+            size={48}
+            className="opacity-20 group-hover:scale-110 transition-transform"
+          />
+        </div>
 
-  {/* কার্ড ২: পেইড অ্যামাউন্ট */}
-  <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl flex items-center gap-4">
-    <div className="p-3 bg-green-100 text-green-600 rounded-2xl">
-      <CreditCard size={24} />
-    </div>
-    <div>
-      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Total Paid</p>
-      <h3 className="text-2xl font-black text-slate-800 italic">৳{totalPaidAmount}</h3>
-    </div>
-  </div>
+        {/* কার্ড ২: পেইড অ্যামাউন্ট */}
+        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl flex items-center gap-4">
+          <div className="p-3 bg-green-100 text-green-600 rounded-2xl">
+            <CreditCard size={24} />
+          </div>
+          <div>
+            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+              Total Paid
+            </p>
+            <h3 className="text-2xl font-black text-slate-800 italic">
+              ৳{totalPaidAmount}
+            </h3>
+          </div>
+        </div>
 
-  {/* কার্ড ৩: পেন্ডিং পার্সেল */}
-  <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl flex items-center gap-4">
-    <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl">
-      <Loader2 size={24} className="animate-spin" />
-    </div>
-    <div>
-      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Pending</p>
-      <h3 className="text-2xl font-black text-slate-800 italic">{pendingParcels}</h3>
-    </div>
+       {/* কার্ড ৩: পেন্ডিং (Unpaid) পার্সেল */}
+<div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl flex items-center gap-4">
+  <div className="p-3 bg-red-100 text-red-600 rounded-2xl">
+    <CreditCard size={24} /> 
+  </div>
+  <div>
+    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Pending Payment</p>
+    <h3 className="text-2xl font-black text-slate-800 italic">
+      {pendingParcels}
+    </h3>
   </div>
 </div>
+      </div>
 
       <div className="w-full bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
@@ -194,16 +211,27 @@ const pendingParcels = parcels.filter(p => p.deliveryStatus?.toLowerCase() === '
 
             <tbody className="divide-y divide-slate-50">
               {parcels.map((parcel, index) => (
-                <tr key={parcel._id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="text-center font-bold text-slate-400">{index + 1}</td>
+                <tr
+                  key={parcel._id}
+                  className="hover:bg-slate-50/50 transition-colors"
+                >
+                  <td className="text-center font-bold text-slate-400">
+                    {index + 1}
+                  </td>
                   <td className="py-5 px-6">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${parcel.type === "document" ? "bg-blue-100 text-blue-600" : "bg-purple-100 text-purple-600"}`}>
+                      <div
+                        className={`p-2 rounded-lg ${parcel.type === "document" ? "bg-blue-100 text-blue-600" : "bg-purple-100 text-purple-600"}`}
+                      >
                         <Package size={18} />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-800">{parcel.title}</div>
-                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">ID: {parcel.trackingId}</div>
+                        <div className="font-bold text-slate-800">
+                          {parcel.title}
+                        </div>
+                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
+                          ID: {parcel.trackingId}
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -213,16 +241,22 @@ const pendingParcels = parcels.filter(p => p.deliveryStatus?.toLowerCase() === '
                       {parcel.creationDate?.split(",")[0]}
                     </div>
                   </td>
-                  <td><span className="font-black text-slate-900">৳{parcel.deliveryCost}</span></td>
                   <td>
-                    <div className={`badge badge-md font-black border-none py-3 px-4 ${parcel.paymentStatus === "Paid" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                    <span className="font-black text-slate-900">
+                      ৳{parcel.deliveryCost}
+                    </span>
+                  </td>
+                  <td>
+                    <div
+                      className={`badge badge-md font-black border-none py-3 px-4 ${parcel.paymentStatus === "Paid" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}
+                    >
                       {parcel.paymentStatus}
                     </div>
                   </td>
                   <td className="text-center">
                     <div className="flex items-center justify-center gap-2">
                       {/* Review Button */}
-                      {parcel.deliveryStatus === 'delivered' && (
+                      {parcel.deliveryStatus === "delivered" && (
                         <button
                           onClick={() => handleReview(parcel)}
                           className="btn btn-square btn-sm bg-yellow-50 border-none text-yellow-600 hover:bg-yellow-500 hover:text-white"
@@ -233,7 +267,11 @@ const pendingParcels = parcels.filter(p => p.deliveryStatus?.toLowerCase() === '
                       )}
 
                       {/* View Button */}
-                      <button onClick={() => handleView(parcel)} className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200" title="View">
+                      <button
+                        onClick={() => handleView(parcel)}
+                        className="btn btn-square btn-sm bg-slate-100 border-none text-slate-600 hover:bg-slate-200"
+                        title="View"
+                      >
                         <Eye size={16} />
                       </button>
 
