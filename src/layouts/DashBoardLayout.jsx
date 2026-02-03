@@ -199,7 +199,7 @@ const DashBoardLayout = () => {
 
           <li className="mb-6">
             <Link
-              to="/dashboard/profile"
+              to="/dashboard/myProfile"
               className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
             >
               <User size={20} /> My Profile

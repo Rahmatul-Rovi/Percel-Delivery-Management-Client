@@ -17,7 +17,7 @@ const PaymentHistory = () => {
     },
   });
 
-  // 🔹 Latest payment first
+  //  Latest payment first
   const sortedPayments = [...payments].sort(
     (a, b) => new Date(b.date) - new Date(a.date),
   );
@@ -45,7 +45,7 @@ const PaymentHistory = () => {
             Total Transactions: {sortedPayments.length}
           </p>
         </div>
-        // UI তে এই কার্ডটি যোগ করো:
+       
         <div className="bg-orange-600 text-white p-6 rounded-[2.5rem] mb-8 flex justify-between items-center  shadow-xl">
           <div>
             <p className="text-orange-200 text-xs font-bold uppercase tracking-widest">

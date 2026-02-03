@@ -15,7 +15,7 @@ const PaymentForm = () => {
   const [processing, setProcessing] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
 
-  // 🔹 Load parcel info
+  //  Load parcel info
   const { isPending, data: parcelInfo = {} } = useQuery({
     queryKey: ["parcels", id],
     queryFn: async () => {
@@ -35,7 +35,7 @@ const PaymentForm = () => {
     }
   }, [amount, axiosSecure, parcelInfo?.paymentStatus]);
 
-  // 🔹 Handle payment submit
+  //  Handle payment submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -73,7 +73,7 @@ const PaymentForm = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Payment Successful 🎉",
+        title: "Payment Successful!",
         text: "Your parcel payment has been completed successfully!",
         confirmButtonColor: "#f97316",
       });
@@ -82,7 +82,7 @@ const PaymentForm = () => {
     setProcessing(false);
   };
 
-  // 🔹 Loading UI
+  //  Loading UI
   if (isPending) {
     return <p className="text-center">Loading payment info...</p>;
   }
@@ -90,7 +90,7 @@ const PaymentForm = () => {
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow">
       
-      {/* ✅ IF ALREADY PAID */}
+      {/*  IF ALREADY PAID */}
       {parcelInfo.paymentStatus === "paid" ? (
         <div className="text-center">
           <h3 className="text-green-600 font-semibold text-lg">
@@ -104,7 +104,7 @@ const PaymentForm = () => {
           </p>
         </div>
       ) : (
-        /* 💳 PAYMENT FORM */
+        /*  PAYMENT FORM */
         <form onSubmit={handleSubmit} className="space-y-4">
           <CardElement />
 
