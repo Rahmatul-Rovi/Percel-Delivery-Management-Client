@@ -1,5 +1,5 @@
 import React from "react";
-import useAuth from "../../../Hooks/UseAuth";
+import useAuth from "../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { CreditCard, Calendar, Hash, Banknote } from "lucide-react";
@@ -19,7 +19,7 @@ const PaymentHistory = () => {
 
   // 🔹 Latest payment first
   const sortedPayments = [...payments].sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
+    (a, b) => new Date(b.date) - new Date(a.date),
   );
 
   if (isPending) {
@@ -29,6 +29,8 @@ const PaymentHistory = () => {
       </div>
     );
   }
+
+  const totalSpent = sortedPayments.reduce((sum, p) => sum + p.amount, 0);
 
   return (
     <div className="p-4 md:p-8 bg-slate-50 min-h-screen">
@@ -43,14 +45,21 @@ const PaymentHistory = () => {
             Total Transactions: {sortedPayments.length}
           </p>
         </div>
-
+        // UI তে এই কার্ডটি যোগ করো:
+        <div className="bg-orange-600 text-white p-6 rounded-[2.5rem] mb-8 flex justify-between items-center  shadow-xl">
+          <div>
+            <p className="text-orange-200 text-xs font-bold uppercase tracking-widest">
+              Lifetime Spend
+            </p>
+            <h3 className="text-4xl font-black italic">৳{totalSpent}</h3>
+          </div>
+          <Banknote size={48} className="opacity-30" />
+        </div>
         {/* Empty State */}
         {sortedPayments.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-slate-200">
             <Banknote className="mx-auto text-slate-300 mb-4" size={64} />
-            <p className="text-xl text-slate-500">
-              No payment records found.
-            </p>
+            <p className="text-xl text-slate-500">No payment records found.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
