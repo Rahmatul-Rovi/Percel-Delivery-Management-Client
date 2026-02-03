@@ -24,6 +24,7 @@ import PendingDeliveries from "../Pages/Dashboard/PendingDeliveries/PendingDeliv
 import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
 import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 import AdminStatistics from "../Pages/Dashboard/AdminStatistics/AdminStatistics";
+import MyProfile from "../Pages/Shared/MyProfile/MyProfile";
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
      {
       path: "track",
       Component: TrackParcel
+     },
+     {
+      path: "myProfile",
+      Component: MyProfile
      },
 
      // Rider Only Routes
