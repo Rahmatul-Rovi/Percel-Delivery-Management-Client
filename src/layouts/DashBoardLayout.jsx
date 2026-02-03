@@ -15,6 +15,7 @@ import {
   Truck,
   CheckCircle,
   MessageSquareQuote,
+  BarChart3,
 } from "lucide-react";
 import useUserRole from "../Hooks/useUserRole";
 
@@ -172,6 +173,15 @@ const DashBoardLayout = () => {
                   className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
                 >
                   <Clock size={20} /> Pending Riders
+                </Link>
+              </li>
+
+              <li className="mb-2">
+                <Link
+                  to="/dashboard/adminStatistics"
+                  className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
+                >
+                  <BarChart3 size={20} /> Statistics
                 </Link>
               </li>
 

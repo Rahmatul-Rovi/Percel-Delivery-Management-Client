@@ -23,6 +23,7 @@ import RiderRoute from "../Routes/RiderRoute";
 import PendingDeliveries from "../Pages/Dashboard/PendingDeliveries/PendingDeliveries";
 import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
 import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
+import AdminStatistics from "../Pages/Dashboard/AdminStatistics/AdminStatistics";
 
 export const router = createBrowserRouter([
   {
@@ -117,6 +118,10 @@ export const router = createBrowserRouter([
      {
       path: "makeAdmin",
       element: <AdminRoute><MakeAdmin></MakeAdmin></AdminRoute>
+     },
+     {
+      path: "adminStatistics",
+      element: <AdminRoute> <AdminStatistics></AdminStatistics> </AdminRoute>
      }
     ]
   }
