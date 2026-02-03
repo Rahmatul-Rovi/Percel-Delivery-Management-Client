@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import Swal from "sweetalert2";
 import {
   Search,
@@ -91,7 +91,7 @@ const MakeAdmin = () => {
             <input
               type="email"
               placeholder="Start typing email to search"
-              className="w-full p-5 pl-12 bg-white border-2 border-slate-100 rounded-[2rem] font-bold focus:border-orange-500 outline-none shadow-xl transition-all"
+              className="w-full p-5 pl-12 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-[2rem] font-bold focus:border-orange-500 outline-none shadow-xl transition-all text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
               value={searchEmail}
               onChange={(e) => setSearchEmail(e.target.value)}
             />
