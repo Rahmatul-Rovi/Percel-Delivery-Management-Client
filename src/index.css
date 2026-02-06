@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
-/* 1. Tailwind v4 er theme block eikhane custom colors thakbe */
+
 @theme {
   --color-my-orange: #ea580c;
   --color-my-orange-dark: #c2410c;
   
-  /* Font-tao eikhane add koro jate direct font-urbanist class use kora jay */
+
   --font-urbanist: "Urbanist", sans-serif;
 }
 
-/* 2. DaisyUI configuration */
+
 @plugin "daisyui"{
   themes: light --default, dark --prefersdark;
 }
@@ -21,7 +21,7 @@
   font-family: var(--font-urbanist);
 }
 
-/* Dark mode default behavior thik korar jonno */
+
 @media (prefers-color-scheme: dark) {
   body {
     background-color: #0f172a;
