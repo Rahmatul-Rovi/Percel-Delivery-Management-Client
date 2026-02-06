@@ -8,7 +8,6 @@ const MyProfile = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // ডাটাবেস থেকে ইউজারের এক্সট্রা তথ্য আনা
   const { data: stats = {} } = useQuery({
     queryKey: ["user-stats", user?.email],
     enabled: !!user?.email,
@@ -18,7 +17,6 @@ const MyProfile = () => {
     },
   });
 
-  // ফায়ারবেস থেকে ছবি না পাওয়া গেলে এই লিংকটা কাজ করবে
   const defaultImage = "https://i.ibb.co/mJR9nkv/user.png";
 
   return (
@@ -29,14 +27,14 @@ const MyProfile = () => {
           
           <div className="px-8 pb-8 text-left">
             <div className="relative -mt-16 mb-6 flex flex-col md:flex-row items-end gap-6">
-              {/* ইমেজ ট্যাগটি এখানে ফিক্স করা হয়েছে */}
+            
               <div className="bg-white p-2 rounded-[2.5rem] shadow-2xl">
                 <img 
                   src={user?.photoURL || defaultImage} 
-                  referrerPolicy="no-referrer" // গুগল ইমেজ লোড করার জন্য এটি জরুরি
+                  referrerPolicy="no-referrer" 
                   className="w-40 h-40 rounded-[2rem] object-cover"
                   alt="Profile"
-                  onError={(e) => { e.target.src = defaultImage }} // ইমেজ এরর দিলে ডিফল্ট শো করবে
+                  onError={(e) => { e.target.src = defaultImage }} 
                 />
               </div>
               

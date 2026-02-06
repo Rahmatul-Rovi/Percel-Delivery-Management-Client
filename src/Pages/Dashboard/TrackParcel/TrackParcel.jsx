@@ -13,7 +13,6 @@ const TrackParcel = () => {
     queryKey: ["track", searchId],
     enabled: !!searchId,
     queryFn: async () => {
-      // তোমার এপিআই এন্ডপয়েন্ট অনুযায়ী এটা /track-parcel হতে পারে
       const res = await axiosSecure.get(`/track-parcel/${searchId}`);
       return res.data;
     },
@@ -76,7 +75,7 @@ const TrackParcel = () => {
             <div className="relative space-y-12">
               <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
 
-              {/* trackingHistory ম্যাপ করা হচ্ছে (Reverse করে যাতে লেটেস্ট উপরে থাকে) */}
+              {/* trackingHistory is mapping */}
               {[...(trackingDetails.trackingHistory || [])].reverse().map((update, index) => (
                 <div key={index} className="relative pl-12 animate-in fade-in slide-in-from-left-4 duration-500">
                   {/* Dot */}

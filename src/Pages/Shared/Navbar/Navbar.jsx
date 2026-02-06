@@ -78,7 +78,7 @@ const Navbar = () => {
           </div>
         </div>
         
-        {/* মেনুটা এখানে একটি <ul> এর ভেতরেই থাকবে */}
+        {/* Menu will show in Ul */}
         <ul tabIndex={0} className="mt-3 z-[1] p-4 shadow-2xl menu menu-sm dropdown-content bg-white dark:bg-slate-900 rounded-2xl w-52 border border-slate-100 dark:border-slate-800">
           <li className="mb-2 px-2 py-1 font-black text-slate-500 border-b dark:border-slate-800">
             {user?.displayName}
