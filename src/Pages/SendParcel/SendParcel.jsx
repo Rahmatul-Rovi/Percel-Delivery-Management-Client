@@ -7,7 +7,7 @@ import useAxiosSecure from '../../Hooks/UseAxiosSecure';
 
 
 
-// BeARider এর সাথে ১০০% ম্যাচ করা ডাটা
+// Matching Data with BeARider 
 const coverageData = [
   { region: "Dhaka", districts: ["Dhaka North", "Dhaka South", "Gazipur", "Narayanganj", "Tangail"] },
   { region: "Chattogram", districts: ["Chattogram City", "Cox's Bazar", "Cumilla", "Noakhali"] },
@@ -87,7 +87,7 @@ const SendParcel = () => {
     confirmButtonText: 'Confirm Order'
   }).then((result) => {
     if (result.isConfirmed) {
-      // এখানে trackingHistory অ্যারেটি যোগ করা হয়েছে
+      //  trackingHistory is added 
       const finalBookingData = {
         ...formData,
         senderEmail: user?.email,
@@ -98,7 +98,7 @@ const SendParcel = () => {
         deliveryStatus: "Processing",
         paymentStatus: "Unpaid",
         serviceCenter: formData.receiverDistrict,
-        // প্রথম ট্র্যাকিং স্টেজ
+        // First tracking Stage
         trackingHistory: [
           {
             status: "Submitted",
@@ -111,7 +111,7 @@ const SendParcel = () => {
       axiosSecure.post('/parcels', finalBookingData).then(res => {
         if(res.data.insertedId) {
           Swal.fire({ title: 'Booking Success!', icon: 'success', confirmButtonColor: '#ea580c' });
-          // ফর্ম রিসেট বা রিডাইরেক্ট করতে পারেন এখানে
+          // Form reset or direct
         }
       });
     }
