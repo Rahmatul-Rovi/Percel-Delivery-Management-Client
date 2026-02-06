@@ -26,6 +26,7 @@ import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 import AdminStatistics from "../Pages/Dashboard/AdminStatistics/AdminStatistics";
 import MyProfile from "../Pages/Shared/MyProfile/MyProfile";
 import AboutUs from "../Pages/Shared/AboutUs/AboutUs";
+import ContactUs from "../Pages/Shared/ContactUs/ContactUs";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: "aboutUs",
         Component: AboutUs,
+      },
+      {
+        path: "contactUs",
+        Component: ContactUs,
       },
       {
         path: "forbidden",
