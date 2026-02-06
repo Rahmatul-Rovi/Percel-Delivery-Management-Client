@@ -17,7 +17,6 @@ const MakeAdmin = () => {
   const [debouncedEmail, setDebouncedEmail] = useState(""); // Delayed value for search
   const [selectedUser, setSelectedUser] = useState(null); // The final user to manage
 
-  // 1. Debouncing Logic: Typing থামালে ৫০০ মিলি-সেকেন্ড পর সার্চ ট্রিগার হবে
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedEmail(searchEmail);

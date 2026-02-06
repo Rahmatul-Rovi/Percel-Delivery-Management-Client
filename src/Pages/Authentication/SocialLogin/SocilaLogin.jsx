@@ -1,5 +1,5 @@
 import React from "react";
-import useAuth from "../../../Hooks/UseAuth";
+import useAuth from "../../../Hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure"; 
 import Swal from "sweetalert2";
@@ -14,20 +14,17 @@ const SocilaLogin = () => {
 
     const handleGoogleSignIn = async () => {
         try {
-            // ১. গুগল দিয়ে সাইন ইন
             const result = await signInWithGoogle();
             const user = result.user;
 
-            // ২. ডাটাবেসের জন্য ইউজার অবজেক্ট তৈরি
             const userInfo = {
                 email: user?.email,
                 name: user?.displayName,
                 image: user?.photoURL,
-                role: 'user', // ডিফল্ট রোল
+                role: 'user', 
                 lastLogin: new Date().toISOString()
             };
 
-            // ৩. ডাটাবেসে ইউজার সেভ করা (Upsert লজিক ব্যাকএন্ডে হ্যান্ডেল করা ভালো)
             const res = await axiosSecure.post('/users', userInfo);
             
             if (res.data) {
@@ -38,7 +35,6 @@ const SocilaLogin = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                // সাকসেস হলে কাঙ্ক্ষিত পেজে নিয়ে যাবে
                 navigate(from, { replace: true });
             }
         } catch (error) {

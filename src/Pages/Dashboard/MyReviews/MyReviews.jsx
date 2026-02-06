@@ -12,7 +12,7 @@ const MyReviews = () => {
     queryKey: ["rider-reviews", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      // ব্যাকএন্ডে যে রাউটটি আমরা বানিয়েছিলাম
+      // Backend Routing
       const res = await axiosSecure.get(`/reviews/${user?.email}`);
       return res.data;
     },

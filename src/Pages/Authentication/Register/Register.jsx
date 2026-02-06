@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import useAuth from '../../../Hooks/UseAuth';
-import { Link, useNavigate } from 'react-router'; // navigate add korlam
+import useAuth from '../../../Hooks/useAuth';
+import { Link, useNavigate } from 'react-router'; 
 import SocilaLogin from '../SocialLogin/SocilaLogin';
 import useAxios from '../../../Hooks/useAxios';
 import Swal from 'sweetalert2';
@@ -14,11 +14,10 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         try {
-            // ১. ফায়ারবেসে ইউজার ক্রিয়েট করা
+            
             const result = await createUser(data.email, data.password);
             console.log("Firebase User:", result.user);
 
-            // ২. ইউজার ইনফো অবজেক্ট তৈরি করা (onSubmit এর ভেতরে)
             const userInfo = {
                 email: data.email,
                 role: 'user', 
@@ -26,7 +25,6 @@ const Register = () => {
                 last_login: new Date().toISOString()
             };
 
-            // ৩. আপনার ডাটাবেসে ইউজার সেভ করা
             const userRes = await axiosInstance.post('/users', userInfo);
             
             if (userRes.data.insertedId) {
@@ -37,7 +35,7 @@ const Register = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate('/'); // সাকসেস হলে হোম পেজে নিয়ে যাবে
+                navigate('/'); 
             }
         } catch (error) {
             console.error("Error during registration:", error);

@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Truck, CheckCircle, XCircle, MapPin, Phone, Calendar, Loader2, Package } from 'lucide-react';
 import Swal from 'sweetalert2';
-import useAuth from '../../../Hooks/UseAuth';
+import useAuth from '../../../Hooks/useAuth';
 import useAxiosSecure from '../../../Hooks/UseAxiosSecure';
 
 const PendingDeliveries = () => {
@@ -10,7 +10,6 @@ const PendingDeliveries = () => {
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
 
-    // ১. ডাটা ফেচ করা
     const { data: tasks = [], isLoading } = useQuery({
         queryKey: ['rider-tasks', user?.email],
         enabled: !!user?.email,
@@ -20,7 +19,7 @@ const PendingDeliveries = () => {
         }
     });
 
-    // ২. স্ট্যাটাস আপডেট মিউটেশন (Deliver/Cancel)
+    // 2. Status Update Mutation (Deliver/Cancel)
     const updateStatusMutation = useMutation({
         mutationFn: async ({ id, status }) => {
             return await axiosSecure.patch(`/parcels/status/${id}`, { status });

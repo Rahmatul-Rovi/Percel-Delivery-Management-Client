@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CheckCircle, DollarSign, MapPin, Calendar, Wallet, Banknote } from 'lucide-react';
-import useAuth from '../../../Hooks/UseAuth';
+import useAuth from '../../../Hooks/useAuth';
 import useAxiosSecure from '../../../Hooks/UseAxiosSecure';
 import Swal from 'sweetalert2';
 
@@ -9,7 +9,6 @@ const CompletedDeliveries = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    // refetch কে এখান থেকে বের করে নিতে হবে
     const { data: completedTasks = [], isLoading, refetch } = useQuery({
         queryKey: ['completed-tasks', user?.email],
         enabled: !!user?.email,
@@ -19,8 +18,6 @@ const CompletedDeliveries = () => {
         }
     });
 
-    // টোটাল আর্নিং ক্যালকুলেশন
-    // আপনার কোডে এই অংশটি ঠিক আছে কিনা মিলিয়ে নিন
 const totalEarnings = completedTasks.reduce((acc, curr) => acc + (Number(curr.earnings) || 0), 0);
 
     const handleCashout = async (item) => {
@@ -38,7 +35,7 @@ const totalEarnings = completedTasks.reduce((acc, curr) => acc + (Number(curr.ea
                     text: `$${item.earnings.toFixed(2)} added to your wallet.`,
                     confirmButtonColor: '#ea580c'
                 });
-                refetch(); // এবার ডাটা আপডেট হবে
+                refetch(); 
             }
         } catch (error) {
             Swal.fire('Error', 'Cashout already done or failed!', 'error');
