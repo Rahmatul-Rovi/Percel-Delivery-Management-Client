@@ -39,7 +39,7 @@ const DashBoardLayout = () => {
             EdificeParcel
           </div>
           <div className="flex-none">
-            {/* Mobile e navbar e jodi kono choto menu ba profile pic rakhte chao */}
+           
             <div className="avatar">
               <div className="w-8 rounded-full ring ring-orange-500 ring-offset-base-100">
                 <img src="https://via.placeholder.com/150" alt="profile" />

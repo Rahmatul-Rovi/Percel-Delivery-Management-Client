@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SocilaLogin from "../SocialLogin/SocilaLogin";
-import useAuth from "../../../Hooks/UseAuth";
+import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Login = () => {
@@ -16,8 +16,6 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 🚀 Safe Redirect Path: 
-  // Jodi state-er bhitore 'from' object thake, tobe tar 'pathname' e jabe, nahole home-e jabe.
   const from = location.state?.from?.pathname || "/";
 
   const onSubmit = (data) => {
@@ -33,7 +31,7 @@ const Login = () => {
           timer: 1500,
         });
 
-        // ✅ User-ke tar target page-e niye jabe
+        // Login User will go to target page
         navigate(from, { replace: true });
       })
       .catch((error) => {
