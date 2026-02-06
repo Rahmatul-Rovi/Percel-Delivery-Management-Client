@@ -114,7 +114,7 @@ const ContactUs = () => {
                   <input 
                     required
                     type="text" 
-                    placeholder="John Doe" 
+                    placeholder="Enter Your Name" 
                     className="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-4 focus:ring-orange-500/20 dark:text-white transition-all outline-none"
                   />
                 </div>
@@ -123,7 +123,7 @@ const ContactUs = () => {
                   <input 
                     required
                     type="email" 
-                    placeholder="john@example.com" 
+                    placeholder="Enter Your Email Address" 
                     className="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-4 focus:ring-orange-500/20 dark:text-white transition-all outline-none"
                   />
                 </div>

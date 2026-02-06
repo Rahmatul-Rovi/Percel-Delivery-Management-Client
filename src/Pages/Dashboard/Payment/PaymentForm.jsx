@@ -88,7 +88,7 @@ const PaymentForm = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow">
+    <div className="max-w-md mx-auto bg-white p-6  rounded-xl shadow">
       
       {/*  IF ALREADY PAID */}
       {parcelInfo.paymentStatus === "paid" ? (
