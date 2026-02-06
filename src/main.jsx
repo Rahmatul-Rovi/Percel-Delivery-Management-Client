@@ -11,16 +11,13 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 
-// 1. Prothome ekta QueryClient instance banate hobe
 const queryClient = new QueryClient();
 
 Aos.init();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* Font ar layout wrapper thik ase */}
     <div className='font-urbanist max-w-7xl mx-auto'>
-      {/* 2. client={queryClient} oboshoy dite hobe */}
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={router} />

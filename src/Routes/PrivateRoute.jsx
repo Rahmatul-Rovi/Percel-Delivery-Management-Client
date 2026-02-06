@@ -1,12 +1,12 @@
 import React from 'react';
-import useAuth from '../Hooks/UseAuth';
-import { Navigate, useLocation } from 'react-router'; // useNavigate eikhane dorkar nai
+import useAuth from '../Hooks/useAuth';
+import { Navigate, useLocation } from 'react-router'; // useNavigate is not necessary
 
 const PrivateRoute = ({children}) => {
     const { user, loading } = useAuth();
     const location = useLocation();
 
-    // 1. Loading thakle spinner dekhabo jate authentication check hobar somoy pay
+    // 1. If there is loading then showthe spinner
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -15,14 +15,11 @@ const PrivateRoute = ({children}) => {
         );
     }
 
-    // 2. User login na thakle login page-e pathabo
+    // 2. If user is mot login then through login page
     if (!user) {
-        // 🚀 Fix: location.pathname na pathiye puro location object pathate hobe
-        // jate login page-e 'location.state.from' thikmoto pabe
         return <Navigate state={{ from: location }} to='/login' replace />
     }
 
-    // 3. Login thakle target page (children) dekhabo
     return children;
 };
 
