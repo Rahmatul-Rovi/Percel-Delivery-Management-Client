@@ -25,109 +25,168 @@ import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/Complete
 import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 import AdminStatistics from "../Pages/Dashboard/AdminStatistics/AdminStatistics";
 import MyProfile from "../Pages/Shared/MyProfile/MyProfile";
+import AboutUs from "../Pages/Shared/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayouts,
     children: [
-        {
-            index: true,
-            Component: Home
-        },
-        {
-          path: "coverage",
-          Component: Coverage
-        },
-        {
-          path: "forbidden",
-          Component: Forbidden
-        },
-        {
-         path: "beARider",
-         element: <PrivateRoute> <BeARider></BeARider> </PrivateRoute>
-        },
-        {
-          path: "sendParcel",
-          element: <PrivateRoute> <SendParcel></SendParcel> </PrivateRoute>
-        }
-    ]
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "coverage",
+        Component: Coverage,
+      },
+      {
+        path: "aboutUs",
+        Component: AboutUs,
+      },
+      {
+        path: "forbidden",
+        Component: Forbidden,
+      },
+      {
+        path: "beARider",
+        element: (
+          <PrivateRoute>
+            {" "}
+            <BeARider></BeARider>{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "sendParcel",
+        element: (
+          <PrivateRoute>
+            {" "}
+            <SendParcel></SendParcel>{" "}
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
 
   {
     path: "/",
     Component: AuthLayout,
-    children:[
+    children: [
       {
         path: "login",
-        Component: Login
+        Component: Login,
       },
       {
-        path: 'register',
-        Component: Register
-      }
-    ]
+        path: "register",
+        Component: Register,
+      },
+    ],
   },
   {
     path: "dashboard",
-    element: <PrivateRoute> <DashBoardLayout></DashBoardLayout> </PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        {" "}
+        <DashBoardLayout></DashBoardLayout>{" "}
+      </PrivateRoute>
+    ),
     children: [
-     {
-       path: "myParcels",
-      Component: MyParcels
-     },
-     {
-      path: "payment/:id",
-      Component: Payment
-     },
-     {
-      path: "paymentHistory",
-      Component: PaymentHistory
-     },
-     {
-      path: "track",
-      Component: TrackParcel
-     },
-     {
-      path: "myProfile",
-      Component: MyProfile
-     },
+      {
+        path: "myParcels",
+        Component: MyParcels,
+      },
+      {
+        path: "payment/:id",
+        Component: Payment,
+      },
+      {
+        path: "paymentHistory",
+        Component: PaymentHistory,
+      },
+      {
+        path: "track",
+        Component: TrackParcel,
+      },
+      {
+        path: "myProfile",
+        Component: MyProfile,
+      },
 
-     // Rider Only Routes
-     {
-      path: "pendingDeliveries",
-      element: <RiderRoute> <PendingDeliveries></PendingDeliveries> </RiderRoute>
-     },
-     {
-      path: "completedDeliveries",
-      element: <RiderRoute> <CompletedDeliveries></CompletedDeliveries> </RiderRoute>
-     },
-     {
-     path: "my-reviews",
-     element: <RiderRoute> <MyReviews></MyReviews> </RiderRoute>
-     },
+      // Rider Only Routes
+      {
+        path: "pendingDeliveries",
+        element: (
+          <RiderRoute>
+            {" "}
+            <PendingDeliveries></PendingDeliveries>{" "}
+          </RiderRoute>
+        ),
+      },
+      {
+        path: "completedDeliveries",
+        element: (
+          <RiderRoute>
+            {" "}
+            <CompletedDeliveries></CompletedDeliveries>{" "}
+          </RiderRoute>
+        ),
+      },
+      {
+        path: "my-reviews",
+        element: (
+          <RiderRoute>
+            {" "}
+            <MyReviews></MyReviews>{" "}
+          </RiderRoute>
+        ),
+      },
 
-     // Admin Only Routes
-     {
-      path: "assignRider",
-      element: <AdminRoute> <AssignRider></AssignRider> </AdminRoute>
-     },
-     {
-      path: "pendingRiders",
-      element: <AdminRoute> <PendingRiders></PendingRiders> </AdminRoute>
-     },
-     {
-      path: "activeRiders",
-      element: <AdminRoute> <ActiveRiders></ActiveRiders> </AdminRoute>
-     },
-     {
-      path: "makeAdmin",
-      element: <AdminRoute><MakeAdmin></MakeAdmin></AdminRoute>
-     },
-     {
-      path: "adminStatistics",
-      element: <AdminRoute> <AdminStatistics></AdminStatistics> </AdminRoute>
-     }
-    ]
-  }
+      // Admin Only Routes
+      {
+        path: "assignRider",
+        element: (
+          <AdminRoute>
+            {" "}
+            <AssignRider></AssignRider>{" "}
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "pendingRiders",
+        element: (
+          <AdminRoute>
+            {" "}
+            <PendingRiders></PendingRiders>{" "}
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "activeRiders",
+        element: (
+          <AdminRoute>
+            {" "}
+            <ActiveRiders></ActiveRiders>{" "}
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "makeAdmin",
+        element: (
+          <AdminRoute>
+            <MakeAdmin></MakeAdmin>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "adminStatistics",
+        element: (
+          <AdminRoute>
+            {" "}
+            <AdminStatistics></AdminStatistics>{" "}
+          </AdminRoute>
+        ),
+      },
+    ],
+  },
 ]);
