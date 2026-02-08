@@ -6,7 +6,7 @@ import useAuth from '../Hooks/useAuth';
 
 const AdminRoute = ({children}) => {
     const {user, loading} = useAuth();
-    const [role, isRoleLoading] = useUserRole(); // Fixed this line
+    const [role, isRoleLoading] = useUserRole(); 
 
     if (loading || isRoleLoading) {
         return (

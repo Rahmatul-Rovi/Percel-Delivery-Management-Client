@@ -4,7 +4,7 @@ import useUserRole from '../Hooks/useUserRole';
 
 const RiderRoute = ({children}) => {
      const {user, loading} = useAuth();
-    const [role, isRoleLoading] = useUserRole(); // Fixed this line
+    const [role, isRoleLoading] = useUserRole(); 
 
     if (loading || isRoleLoading) {
         return (
