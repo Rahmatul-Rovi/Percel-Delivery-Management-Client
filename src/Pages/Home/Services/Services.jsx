@@ -254,25 +254,66 @@ const Services = () => {
       </section>
 
       {/* Tracking CTA Section */}
-      <section className="py-24 bg-white">
-        <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          className="max-w-5xl mx-auto px-6 bg-orange-600 rounded-[3rem] p-12 md:p-20 text-center shadow-2xl shadow-orange-200 relative overflow-hidden"
-        >
-          <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-            <div className="absolute top-10 left-10 w-40 h-40 border-4 border-white rounded-full"></div>
-            <div className="absolute bottom-10 right-10 w-60 h-60 border-4 border-white rounded-full"></div>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 relative z-10">Track Your Parcel Instantly</h2>
-          <p className="text-orange-100 mb-12 text-lg max-w-xl mx-auto">Enter your tracking ID to see the real-time location of your package.</p>
-          <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto relative z-10">
-            <input type="text" placeholder="PKG-9982" className="flex-1 px-8 py-5 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-400 text-lg shadow-inner" />
-            <button className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-bold hover:bg-black transition-all shadow-lg text-lg">Track Now</button>
-          </div>
-        </motion.div>
-      </section>
+    <section className="py-24 bg-white">
+  <motion.div
+    initial={{ scale: 0.9, opacity: 0 }}
+    whileInView={{ scale: 1, opacity: 1 }}
+    viewport={{ once: true }}
+    className="max-w-5xl mx-auto px-6"
+  >
+    <div className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+      
+      {/* ✅ Background decorations */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+        <div className="absolute -top-10 -left-10 w-64 h-64 bg-orange-600 opacity-20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-10 -right-10 w-80 h-80 bg-orange-500 opacity-10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-600 opacity-5 rounded-full blur-3xl"></div>
+      </div>
+
+      {/* ✅ Badge */}
+      <div className="relative z-10 inline-flex items-center gap-2 bg-orange-600/20 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-widest px-5 py-2 rounded-full mb-8">
+        <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+        Live Tracking
+      </div>
+
+      {/* ✅ Heading */}
+      <h2 className="relative z-10 text-4xl md:text-6xl font-black text-white mb-4 leading-tight tracking-tighter">
+        Track Your Parcel
+        <span className="block text-orange-500">Instantly.</span>
+      </h2>
+
+      <p className="relative z-10 text-slate-400 mb-12 text-lg max-w-xl mx-auto font-medium">
+        Enter your tracking ID to see the real-time status of your package.
+      </p>
+
+      {/* ✅ Input Group */}
+      <div className="relative z-10 flex flex-col md:flex-row gap-3 max-w-2xl mx-auto bg-white/5 border border-white/10 p-2 rounded-2xl backdrop-blur-sm">
+        <input
+          type="text"
+          placeholder="Enter Tracking ID  e.g. PKG-9982"
+          className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-base font-medium transition-all"
+        />
+        <button className="bg-orange-600 hover:bg-orange-500 active:scale-95 text-white px-10 py-4 rounded-xl font-black transition-all shadow-lg shadow-orange-900/50 text-base uppercase tracking-wider whitespace-nowrap">
+          Track Now →
+        </button>
+      </div>
+
+      {/* ✅ Trust badges */}
+      <div className="relative z-10 flex items-center justify-center gap-6 mt-10 flex-wrap">
+        <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+          <span className="text-green-500">✓</span> Real-time updates
+        </div>
+        <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+          <span className="text-green-500">✓</span> No login required
+        </div>
+        <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+          <span className="text-green-500">✓</span> Instant results
+        </div>
+      </div>
+
+    </div>
+  </motion.div>
+</section>
     </div>
   );
 };
