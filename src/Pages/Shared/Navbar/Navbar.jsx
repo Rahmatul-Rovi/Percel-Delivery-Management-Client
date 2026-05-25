@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, NavLink } from "react-router";
 import EdificeLogo from "../EdificeLogo/EdificeLogo";
 import useAuth from "../../../Hooks/useAuth";
 
-
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Dropdown বাইরে click করলে বন্ধ
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const handleLogout = () => {
     logOut()
@@ -13,7 +26,6 @@ const Navbar = () => {
       .catch((error) => console.error(error));
   };
 
-  // Resusable NavLink Style
   const navLinkStyles = ({ isActive }) =>
     `font-bold transition-all duration-300 px-4 py-2 rounded-xl flex items-center gap-2 ${
       isActive
@@ -29,9 +41,9 @@ const Navbar = () => {
       {user?.email && (
         <li><NavLink to="/dashboard" className={navLinkStyles}>Dashboard</NavLink></li>
       )}
-       <li><NavLink to="/beARider" className={navLinkStyles}>Be a Rider</NavLink></li>
+      <li><NavLink to="/beARider" className={navLinkStyles}>Be a Rider</NavLink></li>
       <li><NavLink to="/aboutUs" className={navLinkStyles}>About Us</NavLink></li>
-         <li><NavLink to="/contactUs" className={navLinkStyles}>Contact Us</NavLink></li>
+      <li><NavLink to="/contactUs" className={navLinkStyles}>Contact Us</NavLink></li>
     </>
   );
 
@@ -50,10 +62,8 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
-          <EdificeLogo />
-        </Link>
+        {/* ✅ FIX 1: আগে <Link> দিয়ে wrap ছিল, EdificeLogo এর ভেতরেই Link আছে তাই বাইরেরটা সরানো হয়েছে */}
+        <EdificeLogo />
       </div>
 
       {/* Desktop Menu */}
@@ -63,49 +73,55 @@ const Navbar = () => {
         </ul>
       </div>
 
-    {/* Profile/Login Action */}
-<div className="navbar-end gap-4">
-  {user ? (
-    <div className="flex items-center gap-3">
-      <div className="hidden md:block text-right">
-        <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Welcome</p>
-        <p className="text-sm font-bold dark:text-white">{user?.displayName?.split(' ')[0]}</p>
-      </div>
-      <div className="dropdown dropdown-end">
-        <div tabIndex={0} role="button" className="avatar online border-2 border-my-orange rounded-full hover:scale-110 transition-transform">
-          <div className="w-10 rounded-full">
-            <img src={user?.photoURL || "https://i.ibb.co/mJR9nkv/user.png"} alt="user" />
+      {/* Profile/Login Action */}
+      <div className="navbar-end gap-4">
+        {user ? (
+          <div className="flex items-center gap-3">
+            <div className="hidden md:block text-right">
+              <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">Welcome</p>
+              <p className="text-sm font-bold dark:text-white">{user?.displayName?.split(' ')[0]}</p>
+            </div>
+            <div className="dropdown dropdown-end" ref={dropdownRef}>
+              <div
+                tabIndex={0}
+                role="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="avatar online border-2 border-my-orange rounded-full hover:scale-110 transition-transform cursor-pointer"
+              >
+                <div className="w-10 rounded-full">
+                  <img src={user?.photoURL || "https://i.ibb.co/mJR9nkv/user.png"} alt="user" />
+                </div>
+              </div>
+
+              <ul tabIndex={0} className="mt-3 z-[1] p-4 shadow-2xl menu menu-sm dropdown-content bg-white dark:bg-slate-900 rounded-2xl w-52 border border-slate-100 dark:border-slate-800">
+                <li className="mb-2 px-2 py-1 font-black text-slate-500 border-b dark:border-slate-800">
+                  {user?.displayName}
+                </li>
+                <li>
+                  {/* ✅ FIX 2: <Link> সরাসরি, ভেতরে <a> নেই */}
+                  <Link to="/dashboard/myProfile" className="font-bold mb-1 hover:bg-orange-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
+                    My Profile
+                  </Link>
+                </li>
+                <li>
+                  {/* ✅ FIX 3: <Link> এর ভেতরে <button> ছিল, এখন শুধু button */}
+                  <button onClick={handleLogout} className="text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-900/20">
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        
-        {/* Menu will show in Ul */}
-        <ul tabIndex={0} className="mt-3 z-[1] p-4 shadow-2xl menu menu-sm dropdown-content bg-white dark:bg-slate-900 rounded-2xl w-52 border border-slate-100 dark:border-slate-800">
-          <li className="mb-2 px-2 py-1 font-black text-slate-500 border-b dark:border-slate-800">
-            {user?.displayName}
-          </li>
-          
-          <li>
-            <Link to="/dashboard/myProfile" className="font-bold mb-1 hover:bg-orange-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
-              My Profile
-            </Link>
-          </li>
-          
-          <li>
-            <button onClick={handleLogout} className="text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-900/20">
-              Logout
-            </button>
-          </li>
-        </ul>
+        ) : (
+          // ✅ FIX 4: <Link> এর ভেতরে <button> ছিল — এখন NavLink directly styled
+          <NavLink
+            to="/login"
+            className="btn bg-slate-900 dark:bg-my-orange hover:bg-my-orange dark:hover:bg-my-orange-dark text-white border-none px-8 rounded-xl font-black shadow-lg shadow-slate-200 dark:shadow-none transition-all duration-300 transform hover:scale-105 active:scale-95 uppercase tracking-wider text-xs"
+          >
+            Login
+          </NavLink>
+        )}
       </div>
-    </div>
-  ) : (
-    <Link to="/login">
-      <button className="btn bg-slate-900 dark:bg-my-orange hover:bg-my-orange dark:hover:bg-my-orange-dark text-white border-none px-8 rounded-xl font-black shadow-lg shadow-slate-200 dark:shadow-none transition-all duration-300 transform hover:scale-105 active:scale-95 uppercase tracking-wider text-xs">
-        Login
-      </button>
-    </Link>
-  )}
-</div>
     </div>
   );
 };

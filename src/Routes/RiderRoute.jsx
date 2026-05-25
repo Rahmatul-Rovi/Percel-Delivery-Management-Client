@@ -1,10 +1,12 @@
+// RiderRoute.jsx
 import React from 'react';
 import useAuth from '../Hooks/useAuth';
 import useUserRole from '../Hooks/useUserRole';
+import Forbidden from '../Pages/Forbidden/Forbidden'; // ✅ এই import টা ছিল না
 
-const RiderRoute = ({children}) => {
-     const {user, loading} = useAuth();
-    const [role, isRoleLoading] = useUserRole(); 
+const RiderRoute = ({ children }) => {
+    const { user, loading } = useAuth();
+    const [role, isRoleLoading] = useUserRole();
 
     if (loading || isRoleLoading) {
         return (
@@ -14,12 +16,11 @@ const RiderRoute = ({children}) => {
         );
     }
 
-   if (!user || role?.toLowerCase() !== "rider") {
-        return <Forbidden />; 
+    if (!user || role?.toLowerCase() !== "rider") {
+        return <Forbidden />;
     }
 
     return children;
 };
-
 
 export default RiderRoute;

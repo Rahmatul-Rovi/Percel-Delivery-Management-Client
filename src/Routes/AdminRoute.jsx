@@ -1,12 +1,12 @@
-import React, { Children } from 'react';
+// AdminRoute.jsx
+import React from 'react';
 import useUserRole from '../Hooks/useUserRole';
-import { Navigate } from 'react-router';
-import Forbidden from '../Pages/Forbidden/Forbidden';
 import useAuth from '../Hooks/useAuth';
+import Forbidden from '../Pages/Forbidden/Forbidden';
 
-const AdminRoute = ({children}) => {
-    const {user, loading} = useAuth();
-    const [role, isRoleLoading] = useUserRole(); 
+const AdminRoute = ({ children }) => {
+    const { user, loading } = useAuth();
+    const [role, isRoleLoading] = useUserRole();
 
     if (loading || isRoleLoading) {
         return (
@@ -16,8 +16,8 @@ const AdminRoute = ({children}) => {
         );
     }
 
-   if (!user || role?.toLowerCase() !== "admin") {
-        return <Forbidden />; 
+    if (!user || role?.toLowerCase() !== "admin") {
+        return <Forbidden />;
     }
 
     return children;
