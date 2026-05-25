@@ -1,10 +1,11 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/useAuth';
-import { Link, useNavigate } from 'react-router'; 
+import { Link, useNavigate } from 'react-router';
 import SocilaLogin from '../SocialLogin/SocilaLogin';
 import useAxios from '../../../Hooks/useAxios';
 import Swal from 'sweetalert2';
+import { updateProfile } from 'firebase/auth';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,31 +15,37 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         try {
-            
             const result = await createUser(data.email, data.password);
-            console.log("Firebase User:", result.user);
+            const firebaseUser = result.user;
+
+            // ✅ FIX 4: displayName Firebase এ save করো
+            await updateProfile(firebaseUser, {
+                displayName: data.name || data.email.split('@')[0],
+            });
 
             const userInfo = {
                 email: data.email,
-                role: 'user', 
+                name: data.name || data.email.split('@')[0],
+                role: 'user',
                 created_at: new Date().toISOString(),
                 last_login: new Date().toISOString()
             };
 
             const userRes = await axiosInstance.post('/users', userInfo);
-            
-            if (userRes.data.insertedId) {
+
+            // ✅ FIX 1: existing user হলেও navigate করো
+            if (userRes.data.insertedId || userRes.data.message === 'User already exists') {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "User created successfully!",
+                    title: "Registration successful!",
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate('/'); 
+                navigate('/');
             }
         } catch (error) {
-            console.error("Error during registration:", error);
+            console.error("Registration error:", error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -53,6 +60,12 @@ const Register = () => {
                 <div className="card-body">
                     <h1 className="text-3xl font-bold text-center">Create Account!</h1>
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        {/* Optional name field */}
+                        <div className="form-control">
+                            <label className="label">Name</label>
+                            <input type="text" {...register('name')} className="input input-bordered" placeholder="Your Name" />
+                        </div>
+
                         <div className="form-control">
                             <label className="label">Email</label>
                             <input type="email" {...register('email', { required: true })} className="input input-bordered" placeholder="Email" />
@@ -70,11 +83,11 @@ const Register = () => {
                             <button className="btn btn-primary bg-orange-600 border-none hover:bg-orange-700 text-white">Register</button>
                         </div>
                     </form>
-                    
+
                     <p className='text-center mt-4'>
-                        <small>Already have an account? <Link className='text-orange-600 font-bold' to="/login">Login</Link> </small>
+                        <small>Already have an account? <Link className='text-orange-600 font-bold' to="/login">Login</Link></small>
                     </p>
-                    
+
                     <div className="divider">OR</div>
                     <SocilaLogin />
                 </div>

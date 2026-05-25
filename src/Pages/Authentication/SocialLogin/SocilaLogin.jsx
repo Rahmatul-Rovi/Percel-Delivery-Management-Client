@@ -1,12 +1,12 @@
 import React from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
-import useAxiosSecure from "../../../Hooks/UseAxiosSecure"; 
+import useAxios from "../../../Hooks/useAxios"; // ✅ FIX: axiosSecure → useAxios (public)
 import Swal from "sweetalert2";
 
 const SocilaLogin = () => {
     const { signInWithGoogle } = useAuth();
-    const axiosSecure = useAxiosSecure(); 
+    const axiosInstance = useAxios(); // ✅ token নেই এখনো, তাই public axios
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -21,12 +21,12 @@ const SocilaLogin = () => {
                 email: user?.email,
                 name: user?.displayName,
                 image: user?.photoURL,
-                role: 'user', 
+                role: 'user',
                 lastLogin: new Date().toISOString()
             };
 
-            const res = await axiosSecure.post('/users', userInfo);
-            
+            const res = await axiosInstance.post('/users', userInfo);
+
             if (res.data) {
                 Swal.fire({
                     position: "top-end",
@@ -42,22 +42,18 @@ const SocilaLogin = () => {
             Swal.fire({
                 icon: "error",
                 title: "Login Failed",
-                text: error.message || "Something went wrong during Google sign-in."
+                text: error.message || "Something went wrong."
             });
         }
     };
 
     return (
         <div className="w-full">
-            <button 
-                onClick={handleGoogleSignIn} 
+            <button
+                onClick={handleGoogleSignIn}
                 className="btn btn-outline w-full flex items-center justify-center gap-3 border-slate-200 hover:bg-slate-900 hover:text-white transition-all duration-300 font-bold rounded-xl py-3"
             >
-                <img 
-                    className="w-5 h-5" 
-                    src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-                    alt="google" 
-                />
+                <img className="w-5 h-5" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="google" />
                 <span className="tracking-tight">Continue with Google</span>
             </button>
         </div>
