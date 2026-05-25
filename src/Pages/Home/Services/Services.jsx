@@ -107,42 +107,82 @@ const Services = () => {
       </section>
 
       {/* 2. "How It Works" Section */}
-      <section className="py-24 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold">How We Deliver Your Happiness</h2>
-            <p className="text-slate-400 mt-4 text-lg">Four simple steps to get your parcel delivered.</p>
-          </motion.div>
+<section className="py-24 bg-slate-900 text-white">
+  <div className="max-w-7xl mx-auto px-6">
 
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-4 gap-12"
-          >
-            {[
-              { step: 1, title: "Book Parcel", desc: "Enter details and choose your delivery plan." },
-              { step: 2, title: "Pickup", desc: "Our rider collects the parcel from your doorstep." },
-              { step: 3, title: "In Transit", desc: "Your package moves through our safe network." },
-              { step: 4, title: "Delivery", desc: "The recipient receives the parcel securely." },
-            ].map((item, idx) => (
-              <motion.div variants={fadeInUp} key={idx} className="text-center group">
-                <div className="w-20 h-20 bg-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-8 text-2xl font-bold rotate-3 group-hover:rotate-0 transition-transform duration-300 shadow-xl shadow-orange-600/20">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-slate-400 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+    {/* Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-center mb-20"
+    >
+      <span className="inline-block text-xs font-black uppercase tracking-widest text-orange-500 bg-orange-600/10 border border-orange-500/20 px-5 py-2 rounded-full mb-6">
+        How It Works
+      </span>
+      <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
+        How We Deliver
+        <span className="block text-orange-500">Your Happiness</span>
+      </h2>
+      <p className="text-slate-400 text-lg max-w-xl mx-auto font-medium">
+        Four simple steps to get your parcel delivered safely and on time.
+      </p>
+    </motion.div>
+
+    {/* Steps */}
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="grid grid-cols-1 md:grid-cols-4 gap-6 relative"
+    >
+      {/* ✅ Connector line — desktop only */}
+      <div className="hidden md:block absolute top-[3.5rem] left-[12.5%] right-[12.5%] h-[2px] bg-gradient-to-r from-orange-600/0 via-orange-600/40 to-orange-600/0 z-0"></div>
+
+      {[
+        { step: 1, title: "Book Parcel", desc: "Enter details and choose your delivery plan.", icon: "📋" },
+        { step: 2, title: "Pickup", desc: "Our rider collects the parcel from your doorstep.", icon: "🏠" },
+        { step: 3, title: "In Transit", desc: "Your package moves through our safe network.", icon: "🚚" },
+        { step: 4, title: "Delivery", desc: "The recipient receives the parcel securely.", icon: "✅" },
+      ].map((item, idx) => (
+        <motion.div
+          variants={fadeInUp}
+          key={idx}
+          className="group relative z-10 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-orange-500/30 rounded-[2rem] p-8 text-center transition-all duration-300"
+        >
+          {/* Glow on hover */}
+          <div className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-20 bg-orange-600 opacity-20 rounded-full blur-2xl"></div>
+          </div>
+
+          {/* Step number badge */}
+          <div className="relative z-10 inline-flex items-center justify-center w-8 h-8 bg-orange-600/20 border border-orange-500/30 text-orange-500 text-xs font-black rounded-full mb-4">
+            {item.step}
+          </div>
+
+          {/* Icon circle */}
+          <div className="relative z-10 w-20 h-20 mx-auto mb-6 bg-slate-900 group-hover:bg-orange-600 border border-slate-700 group-hover:border-orange-500 rounded-2xl flex items-center justify-center text-3xl transition-all duration-300 shadow-xl rotate-3 group-hover:rotate-0">
+            {item.icon}
+          </div>
+
+          {/* Title */}
+          <h3 className="relative z-10 text-xl font-black text-white mb-3 tracking-tight">
+            {item.title}
+          </h3>
+
+          {/* Divider */}
+          <div className="relative z-10 w-8 h-[2px] bg-slate-700 group-hover:bg-orange-600 mx-auto mb-3 transition-colors duration-300 rounded-full"></div>
+
+          {/* Description */}
+          <p className="relative z-10 text-slate-400 leading-relaxed text-sm font-medium">
+            {item.desc}
+          </p>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+</section>
 
       {/* 3. Real-time Stats Section */}
  <section className="py-20 bg-white">
