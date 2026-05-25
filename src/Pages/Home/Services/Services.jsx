@@ -23,57 +23,75 @@ const Services = () => {
   return (
     <div className="bg-white overflow-hidden">
       {/* 1. Features Grid Section */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-          className="text-center mb-16"
-        >
-          <h2 className="text-orange-600 font-extrabold tracking-wide uppercase text-sm">
-            Our Features
-          </h2>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mt-2">
-            World-class Logistics Solutions
-          </h1>
-          <p className="text-gray-500 mt-4 max-w-2xl mx-auto text-lg">
-            We provide the fastest and most reliable parcel delivery services tailored to your needs.
-          </p>
-        </motion.div>
+ <section className="py-20 px-6 max-w-7xl mx-auto">
+  {/* Header */}
+  <motion.div
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-100px" }}
+    variants={fadeInUp}
+    className="text-center mb-16"
+  >
+    <span className="inline-block text-xs font-black uppercase tracking-widest text-orange-600 bg-orange-50 border border-orange-100 px-5 py-2 rounded-full mb-5">
+      Our Features
+    </span>
+    <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mt-2">
+      World-class
+      <span className="text-orange-600"> Logistics</span> Solutions
+    </h2>
+    <p className="text-slate-500 mt-4 max-w-2xl mx-auto text-lg font-medium">
+      We provide the fastest and most reliable parcel delivery services tailored to your needs.
+    </p>
+  </motion.div>
 
-        <motion.div 
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-        >
-          {[
-            { icon: <Truck />, title: "Fast Delivery", desc: "Same day delivery for all local shipments within the city." },
-            { icon: <ShieldCheck />, title: "Secure Shipping", desc: "Every package is insured and handled with extreme care." },
-            { icon: <Clock />, title: "24/7 Support", desc: "Our customer service team is always online to help you." },
-            { icon: <Globe />, title: "Global Reach", desc: "Shipping to over 200+ countries with full tracking." },
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              variants={fadeInUp}
-              whileHover={{ scale: 1.02 }}
-              className="p-8 border border-gray-100 rounded-2xl bg-gray-50 transition-all duration-500 group hover:bg-orange-600 hover:shadow-2xl cursor-pointer"
-            >
-              <div className="text-orange-600 mb-4 transition-colors duration-500 group-hover:text-white">
-                {React.cloneElement(feature.icon, { size: 40 })}
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2 transition-colors duration-500 group-hover:text-white">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed transition-colors duration-500 group-hover:text-orange-50">
-                {feature.desc}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+  {/* Cards */}
+  <motion.div
+    variants={staggerContainer}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+  >
+    {[
+      { icon: <Truck />, title: "Fast Delivery", desc: "Same day delivery for all local shipments within the city.", color: "text-orange-600" },
+      { icon: <ShieldCheck />, title: "Secure Shipping", desc: "Every package is insured and handled with extreme care.", color: "text-orange-600" },
+      { icon: <Clock />, title: "24/7 Support", desc: "Our customer service team is always online to help you.", color: "text-orange-600" },
+      { icon: <Globe />, title: "Global Reach", desc: "Shipping to over 200+ countries with full tracking.", color: "text-orange-600" },
+    ].map((feature, index) => (
+      <motion.div
+        key={index}
+        variants={fadeInUp}
+        className="group relative bg-white border border-slate-100 rounded-[2rem] p-8 transition-all duration-300 hover:bg-slate-900 hover:border-slate-800 hover:shadow-2xl hover:shadow-slate-900/20 cursor-pointer overflow-hidden"
+      >
+        {/* Hover glow */}
+        <div className="absolute -top-6 -right-6 w-24 h-24 bg-orange-600 opacity-0 group-hover:opacity-20 rounded-full blur-2xl transition-opacity duration-300 pointer-events-none"></div>
+
+        {/* Icon */}
+        <div className="relative z-10 w-16 h-16 bg-orange-50 group-hover:bg-orange-600/20 border border-orange-100 group-hover:border-orange-500/30 rounded-2xl flex items-center justify-center text-orange-600 group-hover:text-orange-400 mb-6 transition-all duration-300">
+          {React.cloneElement(feature.icon, { size: 28 })}
+        </div>
+
+        {/* Title */}
+        <h3 className="relative z-10 text-xl font-black text-slate-800 group-hover:text-white mb-2 tracking-tight transition-colors duration-300">
+          {feature.title}
+        </h3>
+
+        {/* Divider */}
+        <div className="relative z-10 w-8 h-[2px] bg-orange-600 mb-4 rounded-full transition-all duration-300 group-hover:w-12"></div>
+
+        {/* Description */}
+        <p className="relative z-10 text-slate-500 group-hover:text-slate-400 leading-relaxed text-sm font-medium transition-colors duration-300">
+          {feature.desc}
+        </p>
+
+        {/* Bottom arrow — shows on hover */}
+        <div className="relative z-10 mt-6 flex items-center gap-2 text-orange-600 group-hover:text-orange-400 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-y-2 group-hover:translate-y-0">
+          Learn More <span>→</span>
+        </div>
+      </motion.div>
+    ))}
+  </motion.div>
+</section>
      
       {/* Strategic Partners Slider */}
       <section className="py-12 bg-white overflow-hidden border-y border-gray-100 relative">
