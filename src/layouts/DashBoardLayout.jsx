@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from "react-router"; // ✅ react-router-dom → react-router
 import {
   Menu,
   Home,
@@ -18,17 +18,18 @@ import {
   BarChart3,
 } from "lucide-react";
 import useUserRole from "../Hooks/useUserRole";
+import useAuth from "../Hooks/useAuth"; // ✅ useAuth যোগ
 
 const DashBoardLayout = () => {
   const [role, isRoleLoading] = useUserRole();
-  console.log(role);
+  const { user } = useAuth(); // ✅ user নেওয়া হয়েছে
 
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       <div className="drawer-content flex flex-col bg-slate-50">
-        {/* --- 📱 Mobile Menu Bar Start --- */}
+        {/* --- 📱 Mobile Menu Bar --- */}
         <div className="w-full navbar bg-slate-900 lg:hidden text-white shadow-md">
           <div className="flex-none">
             <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost">
@@ -39,15 +40,18 @@ const DashBoardLayout = () => {
             EdificeParcel
           </div>
           <div className="flex-none">
-           
             <div className="avatar">
               <div className="w-8 rounded-full ring ring-orange-500 ring-offset-base-100">
-                <img src="https://via.placeholder.com/150" alt="profile" />
+                {/* ✅ placeholder সরিয়ে real user photo */}
+                <img
+                  src={user?.photoURL || "https://i.ibb.co/mJR9nkv/user.png"}
+                  alt={user?.displayName || "profile"}
+                  referrerPolicy="no-referrer"
+                />
               </div>
             </div>
           </div>
         </div>
-        {/* --- 📱 Mobile Menu Bar End --- */}
 
         {/* --- 🚀 Main Page Content --- */}
         <div className="p-4 md:p-10 flex-grow">
@@ -55,7 +59,7 @@ const DashBoardLayout = () => {
         </div>
       </div>
 
-      {/* --- 📋 Sidebar Section --- */}
+      {/* --- 📋 Sidebar --- */}
       <div className="drawer-side z-50">
         <label
           htmlFor="my-drawer-2"
@@ -64,7 +68,7 @@ const DashBoardLayout = () => {
         ></label>
 
         <ul className="menu p-6 w-80 min-h-full bg-slate-900 text-slate-300">
-          {/* Sidebar Header (Logo) */}
+          {/* Sidebar Header */}
           <div className="mb-10 px-4">
             <h2 className="text-3xl font-black italic text-orange-600 tracking-tighter uppercase">
               Edifice<span className="text-white">Parcel</span>
@@ -72,7 +76,23 @@ const DashBoardLayout = () => {
             <div className="h-1 w-20 bg-orange-600 mt-1 rounded-full"></div>
           </div>
 
-          {/* Navigation Items */}
+          {/* ✅ Sidebar এ user info যোগ */}
+          <div className="flex items-center gap-3 mb-6 px-4 py-3 bg-slate-800 rounded-xl">
+            <img
+              src={user?.photoURL || "https://i.ibb.co/mJR9nkv/user.png"}
+              alt={user?.displayName || "profile"}
+              referrerPolicy="no-referrer"
+              className="w-10 h-10 rounded-full object-cover ring-2 ring-orange-500"
+            />
+            <div className="overflow-hidden">
+              <p className="text-sm font-bold text-white truncate">
+                {user?.displayName || "User"}
+              </p>
+              <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+            </div>
+          </div>
+
+          {/* User Panel */}
           <p className="text-xs font-bold text-slate-500 uppercase mb-4 px-4 tracking-widest">
             User Panel
           </p>
@@ -93,9 +113,7 @@ const DashBoardLayout = () => {
               <Package size={20} /> My Parcels
             </Link>
           </li>
-
-          {/* Payment History Link */}
-          <li className="mb-6">
+          <li className="mb-2">
             <Link
               to="/dashboard/paymentHistory"
               className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
@@ -103,8 +121,6 @@ const DashBoardLayout = () => {
               <History size={20} /> Payment History
             </Link>
           </li>
-
-          {/* Track A Package Link */}
           <li className="mb-6">
             <Link
               to="/dashboard/track"
@@ -113,10 +129,13 @@ const DashBoardLayout = () => {
               <MapPin size={20} /> Track A Package
             </Link>
           </li>
-          {/* {Riders Links} */}
+
+          {/* Rider Links */}
           {!isRoleLoading && role?.toLowerCase() === "rider" && (
             <>
-              {/* My Deliveries Link for Rider */}
+              <p className="text-xs font-bold text-slate-500 uppercase mb-4 px-4 tracking-widest">
+                Rider Panel
+              </p>
               <li className="mb-2">
                 <Link
                   to="/dashboard/pendingDeliveries"
@@ -130,11 +149,10 @@ const DashBoardLayout = () => {
                   to="/dashboard/completedDeliveries"
                   className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
                 >
-                  <CheckCircle size={20} /> My Completed Deliveries
+                  <CheckCircle size={20} /> Completed Deliveries
                 </Link>
               </li>
-
-              <li className="mb-2">
+              <li className="mb-6">
                 <Link
                   to="/dashboard/my-reviews"
                   className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
@@ -145,9 +163,12 @@ const DashBoardLayout = () => {
             </>
           )}
 
-          {/* {Admins Links} */}
+          {/* Admin Links */}
           {!isRoleLoading && role?.toLowerCase() === "admin" && (
             <>
+              <p className="text-xs font-bold text-slate-500 uppercase mb-4 px-4 tracking-widest">
+                Admin Panel
+              </p>
               <li className="mb-2">
                 <Link
                   to="/dashboard/assignRider"
@@ -156,7 +177,6 @@ const DashBoardLayout = () => {
                   <UserPlus size={20} /> Assign Rider
                 </Link>
               </li>
-              {/* Active Riders Link */}
               <li className="mb-2">
                 <Link
                   to="/dashboard/activeRiders"
@@ -165,8 +185,6 @@ const DashBoardLayout = () => {
                   <Users size={20} /> Active Riders
                 </Link>
               </li>
-
-              {/* Pending Riders Link */}
               <li className="mb-2">
                 <Link
                   to="/dashboard/pendingRiders"
@@ -175,7 +193,6 @@ const DashBoardLayout = () => {
                   <Clock size={20} /> Pending Riders
                 </Link>
               </li>
-
               <li className="mb-2">
                 <Link
                   to="/dashboard/adminStatistics"
@@ -184,9 +201,7 @@ const DashBoardLayout = () => {
                   <BarChart3 size={20} /> Statistics
                 </Link>
               </li>
-
-              {/* Admin Panel Link */}
-              <li className="mb-2">
+              <li className="mb-6">
                 <Link
                   to="/dashboard/makeAdmin"
                   className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
@@ -197,7 +212,7 @@ const DashBoardLayout = () => {
             </>
           )}
 
-          <li className="mb-6">
+          <li className="mb-2">
             <Link
               to="/dashboard/myProfile"
               className="flex items-center gap-3 py-3 px-4 hover:bg-orange-600 hover:text-white rounded-xl transition-all font-bold"
