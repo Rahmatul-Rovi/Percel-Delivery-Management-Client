@@ -145,29 +145,69 @@ const Services = () => {
       </section>
 
       {/* 3. Real-time Stats Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-12 text-center"
-          >
-            {[
-              { val: "95M+", label: "Delivered Goods" },
-              { val: "120k", label: "Satisfied Clients" },
-              { val: "450+", label: "Delivery Vans" },
-              { val: "100%", label: "Safe & Secure" },
-            ].map((stat, i) => (
-              <motion.div variants={fadeInUp} key={i}>
-                <p className="text-5xl font-black text-slate-900 mb-2">{stat.val}</p>
-                <p className="text-orange-600 font-bold uppercase tracking-widest text-[10px]">{stat.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+ <section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6">
+
+    {/* ✅ Section Header */}
+    <div className="text-center mb-16">
+      <span className="inline-block text-xs font-black uppercase tracking-widest text-orange-600 bg-orange-50 border border-orange-100 px-5 py-2 rounded-full mb-4">
+        Our Numbers
+      </span>
+      <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter">
+        Trusted by <span className="text-orange-600">Millions</span>
+      </h2>
+    </div>
+
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={staggerContainer}
+      className="grid grid-cols-2 lg:grid-cols-4 gap-6"
+    >
+      {[
+        { val: "95M+", label: "Delivered Goods", icon: "📦", desc: "Parcels delivered nationwide" },
+        { val: "120K+", label: "Satisfied Clients", icon: "🤝", desc: "Happy customers & counting" },
+        { val: "450+", label: "Delivery Vans", icon: "🚚", desc: "Active fleet across regions" },
+        { val: "100%", label: "Safe & Secure", icon: "🔒", desc: "Insured & tracked deliveries" },
+      ].map((stat, i) => (
+        <motion.div
+          variants={fadeInUp}
+          key={i}
+          className="group relative bg-slate-50 hover:bg-slate-900 border border-slate-100 rounded-[2rem] p-8 text-center transition-all duration-300 cursor-default overflow-hidden"
+        >
+          {/* Hover glow */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div className="absolute -top-6 -right-6 w-24 h-24 bg-orange-600 opacity-20 rounded-full blur-2xl"></div>
+          </div>
+
+          {/* Icon */}
+          <div className="relative z-10 w-14 h-14 mx-auto mb-5 bg-white group-hover:bg-orange-600/20 border border-slate-200 group-hover:border-orange-500/30 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 shadow-sm">
+            {stat.icon}
+          </div>
+
+          {/* Value */}
+          <p className="relative z-10 text-5xl font-black text-slate-900 group-hover:text-white mb-1 transition-colors duration-300 tracking-tighter">
+            {stat.val}
+          </p>
+
+          {/* Label */}
+          <p className="relative z-10 text-orange-600 group-hover:text-orange-400 font-black uppercase tracking-widest text-[10px] mb-3 transition-colors duration-300">
+            {stat.label}
+          </p>
+
+          {/* Divider */}
+          <div className="relative z-10 w-8 h-[2px] bg-slate-200 group-hover:bg-orange-600 mx-auto mb-3 transition-colors duration-300 rounded-full"></div>
+
+          {/* Description */}
+          <p className="relative z-10 text-slate-400 group-hover:text-slate-400 text-xs font-medium transition-colors duration-300">
+            {stat.desc}
+          </p>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+</section>
 
       {/* Become a Merchant Section */}
       <section className="py-24 bg-white">
