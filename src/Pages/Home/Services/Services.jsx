@@ -220,38 +220,67 @@ const Services = () => {
       </section>
 
       {/* Customer Reviews Section */}
-      <section className="py-24 bg-slate-50 overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-orange-600 font-extrabold uppercase tracking-widest text-sm mb-3">Testimonials</h2>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-slate-900">What Our <span className="text-orange-600">Clients</span> Say</h3>
-          </motion.div>
+     <section className="py-24 bg-gradient-to-b from-slate-50 to-white overflow-hidden relative">
+  <div className="max-w-7xl mx-auto px-6">
+    
+    {/* হেডার পার্ট */}
+    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
+      <span className="text-orange-600 font-bold uppercase tracking-widest text-xs bg-orange-50 px-4 py-1.5 rounded-full mb-3 inline-block">
+        Testimonials
+      </span>
+      <h3 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-2">
+        What Our <span className="text-orange-600">Clients</span> Say
+      </h3>
+    </motion.div>
 
-          <div id="review-container" className="flex gap-8 overflow-x-auto pb-10 no-scrollbar snap-x">
-            {[
-              { id: 1, name: "Sarah Jenkins", role: "E-store Owner", text: "Edifice has completely changed my business. Their delivery is always on time!", rating: 5 },
-              { id: 2, name: "Michael Chen", role: "Individual Sender", text: "The live tracking feature is so accurate. Highly recommended!", rating: 5 },
-              { id: 3, name: "David Miller", role: "Merchant", text: "Professional and secure. Their merchant support team is world-class.", rating: 5 },
-            ].map((review) => (
-              <motion.div key={review.id} whileInView={{ opacity: 1, x: 0 }} initial={{ opacity: 0, x: 50 }} className="min-w-[320px] md:min-w-[450px] bg-white p-12 rounded-[3rem] shadow-xl border border-slate-100 snap-center">
-                <div className="flex gap-1 mb-6 text-orange-500">{[...Array(review.rating)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}</div>
-                <p className="text-slate-600 text-xl leading-relaxed mb-8 font-medium">"{review.text}"</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 font-black text-2xl">{review.name.charAt(0)}</div>
-                  <div className="text-left">
-                    <h4 className="font-bold text-slate-900 text-lg">{review.name}</h4>
-                    <p className="text-orange-600 text-xs font-bold uppercase tracking-widest">{review.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+    {/* রিভিউ কন্টেইনার */}
+    <div id="review-container" className="flex gap-6 overflow-x-auto pb-8 no-scrollbar snap-x scroll-smooth">
+      {[
+        { id: 1, name: "Sarah Jenkins", role: "E-store Owner", text: "Edifice has completely changed my business. Their delivery is always on time!", rating: 5 },
+        { id: 2, name: "Michael Chen", role: "Individual Sender", text: "The live tracking feature is so accurate. Highly recommended!", rating: 5 },
+        { id: 3, name: "David Miller", role: "Merchant", text: "Professional and secure. Their merchant support team is world-class.", rating: 5 },
+      ].map((review) => (
+        <motion.div 
+          key={review.id} 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: review.id * 0.1 }}
+          className="min-w-[310px] md:min-w-[430px] bg-white p-8 md:p-10 rounded-3xl shadow-sm hover:shadow-md border border-slate-100 snap-center flex flex-col justify-between transition-shadow duration-300"
+        >
+          <div>
+            {/* স্টার রেটিং */}
+            <div className="flex gap-1 mb-5 text-amber-500">
+              {[...Array(review.rating)].map((_, i) => <Star key={i} size={16} fill="currentColor" stroke="none" />)}
+            </div>
+            {/* টেক্সট */}
+            <p className="text-slate-600 text-lg leading-relaxed mb-6 font-normal italic">
+              "{review.text}"
+            </p>
           </div>
-          <div className="flex justify-center gap-6 mt-12">
-            <button onClick={() => document.getElementById('review-container').scrollBy({ left: -400, behavior: 'smooth' })} className="p-5 rounded-full border border-slate-200 bg-white hover:bg-orange-600 hover:text-white transition-all shadow-xl shadow-slate-200 active:scale-90"><ChevronLeft size={24} /></button>
-            <button onClick={() => document.getElementById('review-container').scrollBy({ left: 400, behavior: 'smooth' })} className="p-5 rounded-full border border-slate-200 bg-white hover:bg-orange-600 hover:text-white transition-all shadow-xl shadow-slate-200 active:scale-90"><ChevronRight size={24} /></button>
+
+          {/* ইউজার ইনফো */}
+          <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-50">
+            <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600 font-bold text-lg border border-orange-100">
+              {review.name.charAt(0)}
+            </div>
+            <div className="text-left">
+              <h4 className="font-bold text-slate-800 text-base">{review.name}</h4>
+              <p className="text-orange-600 text-[11px] font-extrabold uppercase tracking-wider mt-0.5">{review.role}</p>
+            </div>
           </div>
-        </div>
-      </section>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* নেভিগেশন বাটন */}
+    <div className="flex justify-center gap-4 mt-8">
+      <button onClick={() => document.getElementById('review-container').scrollBy({ left: -430, behavior: 'smooth' })} className="p-4 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-95 shadow-sm"><ChevronLeft size={20} /></button>
+      <button onClick={() => document.getElementById('review-container').scrollBy({ left: 430, behavior: 'smooth' })} className="p-4 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-95 shadow-sm"><ChevronRight size={20} /></button>
+    </div>
+
+  </div>
+</section>
 
       {/* Tracking CTA Section */}
     <section className="py-24 bg-white">
