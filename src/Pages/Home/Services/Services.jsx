@@ -155,7 +155,7 @@ const Services = () => {
       viewport={{ once: true }}
       className="grid grid-cols-1 md:grid-cols-4 gap-6 relative"
     >
-      {/* ✅ Connector line — desktop only */}
+      {/* Connector line — desktop only */}
       <div className="hidden md:block absolute top-[3.5rem] left-[12.5%] right-[12.5%] h-[2px] bg-gradient-to-r from-orange-600/0 via-orange-600/40 to-orange-600/0 z-0"></div>
 
       {[
@@ -206,7 +206,7 @@ const Services = () => {
  <section className="py-20 bg-white">
   <div className="max-w-7xl mx-auto px-6">
 
-    {/* ✅ Section Header */}
+    {/* Section Header */}
     <div className="text-center mb-16">
       <span className="inline-block text-xs font-black uppercase tracking-widest text-orange-600 bg-orange-50 border border-orange-100 px-5 py-2 rounded-full mb-4">
         Our Numbers
@@ -321,7 +321,7 @@ const Services = () => {
      <section className="py-24 bg-gradient-to-b from-slate-50 to-white overflow-hidden relative">
   <div className="max-w-7xl mx-auto px-6">
     
-    {/* হেডার পার্ট */}
+    {/* Header Part */}
     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
       <span className="text-orange-600 font-bold uppercase tracking-widest text-xs bg-orange-50 px-4 py-1.5 rounded-full mb-3 inline-block">
         Testimonials
@@ -331,7 +331,7 @@ const Services = () => {
       </h3>
     </motion.div>
 
-    {/* রিভিউ কন্টেইনার */}
+    {/* Review Container */}
     <div id="review-container" className="flex gap-6 overflow-x-auto pb-8 no-scrollbar snap-x scroll-smooth">
       {[
         { id: 1, name: "Sarah Jenkins", role: "E-store Owner", text: "Edifice has completely changed my business. Their delivery is always on time!", rating: 5 },
@@ -347,17 +347,17 @@ const Services = () => {
           className="min-w-[310px] md:min-w-[430px] bg-white p-8 md:p-10 rounded-3xl shadow-sm hover:shadow-md border border-slate-100 snap-center flex flex-col justify-between transition-shadow duration-300"
         >
           <div>
-            {/* স্টার রেটিং */}
+            {/* Star Rating */}
             <div className="flex gap-1 mb-5 text-amber-500">
               {[...Array(review.rating)].map((_, i) => <Star key={i} size={16} fill="currentColor" stroke="none" />)}
             </div>
-            {/* টেক্সট */}
+            {/* Text */}
             <p className="text-slate-600 text-lg leading-relaxed mb-6 font-normal italic">
               "{review.text}"
             </p>
           </div>
 
-          {/* ইউজার ইনফো */}
+          {/* User Info */}
           <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-50">
             <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600 font-bold text-lg border border-orange-100">
               {review.name.charAt(0)}
@@ -371,7 +371,7 @@ const Services = () => {
       ))}
     </div>
 
-    {/* নেভিগেশন বাটন */}
+    {/* Navigation Button */}
     <div className="flex justify-center gap-4 mt-8">
       <button onClick={() => document.getElementById('review-container').scrollBy({ left: -430, behavior: 'smooth' })} className="p-4 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-95 shadow-sm"><ChevronLeft size={20} /></button>
       <button onClick={() => document.getElementById('review-container').scrollBy({ left: 430, behavior: 'smooth' })} className="p-4 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all active:scale-95 shadow-sm"><ChevronRight size={20} /></button>
@@ -390,20 +390,20 @@ const Services = () => {
   >
     <div className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
       
-      {/* ✅ Background decorations */}
+      {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
         <div className="absolute -top-10 -left-10 w-64 h-64 bg-orange-600 opacity-20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-10 -right-10 w-80 h-80 bg-orange-500 opacity-10 rounded-full blur-3xl"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-600 opacity-5 rounded-full blur-3xl"></div>
       </div>
 
-      {/* ✅ Badge */}
+      {/* Badge */}
       <div className="relative z-10 inline-flex items-center gap-2 bg-orange-600/20 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-widest px-5 py-2 rounded-full mb-8">
         <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
         Live Tracking
       </div>
 
-      {/* ✅ Heading */}
+      {/* Heading */}
       <h2 className="relative z-10 text-4xl md:text-6xl font-black text-white mb-4 leading-tight tracking-tighter">
         Track Your Parcel
         <span className="block text-orange-500">Instantly.</span>
@@ -413,7 +413,7 @@ const Services = () => {
         Enter your tracking ID to see the real-time status of your package.
       </p>
 
-      {/* ✅ Input Group */}
+      {/* Input Group */}
       <div className="relative z-10 flex flex-col md:flex-row gap-3 max-w-2xl mx-auto bg-white/5 border border-white/10 p-2 rounded-2xl backdrop-blur-sm">
         <input
           type="text"
@@ -425,7 +425,7 @@ const Services = () => {
         </button>
       </div>
 
-      {/* ✅ Trust badges */}
+      {/* Trust badges */}
       <div className="relative z-10 flex items-center justify-center gap-6 mt-10 flex-wrap">
         <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
           <span className="text-green-500">✓</span> Real-time updates
